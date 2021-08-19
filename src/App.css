@@ -31,3 +31,12 @@
     transform: rotate(360deg);
   }
 }
+.title {
+  font-style: italic;
+}
+.numbering {
+  display: flex;
+  justify-content: left;
+  padding-left: 20px;
+  color: darkgreen;
+}
