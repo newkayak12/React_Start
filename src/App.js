@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import TodaysPlan from './03TodoPlan/TodaysPlan';
 
 class App extends Component {
   render() {
@@ -13,8 +14,15 @@ class App extends Component {
         <hr></hr>
         <h1 className="numbering">02 reactSample</h1>
         <div>
-          <img className="App-logo " src="/logo.png" />
-          <p style={{fontSize:50}}> Hello! </p>
+          <img className="App-logo " src="/logo.png" alt="logo" />
+          <p style={{ fontSize: 50 }}> Hello! </p>
+        </div>
+
+        <br></br>
+        <hr></hr>
+        <div className="todaysPlan">
+          <h1 className="numbering">03 import _ Component</h1>
+          <TodaysPlan />
         </div>
       </div>
     );
