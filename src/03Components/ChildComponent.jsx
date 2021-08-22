@@ -8,7 +8,7 @@ class ChildComponent extends Component {
       <div>
         <br />
         <br />
-        <span>boolVal: {boolValue}</span>
+        <span>boolVal: {String(boolValue)}</span>
         <br />
         <span>numberVal: {numValue}</span>
         <br />
