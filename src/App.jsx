@@ -7,6 +7,9 @@ import ChildComponent2 from './03Components/ChildComponent2';
 import DefaultPropsComponent from './03Components/DefaultPropsComponent';
 import ChildProperty from './03Components/CHildProperty';
 import StateExample from './03Components/StateExample';
+import ForceUpdateExample from './03Components/ForceUpdateExample';
+import ChangeStateTest from './03Components/changeStateTest';
+import LifeCycle from './03Components/LifeCycle';
 
 class App extends Component {
   render() {
@@ -66,6 +69,29 @@ class App extends Component {
         <hr></hr>
         <h1 className="numbering">7. State로 상태 관리하기 </h1>
         <StateExample />
+        {/* setState를 사용하여 state를 변경하였고 리액트느 검증을 통해서 해당 state를 변경 */}
+        <br></br>
+        <hr></hr>
+        <h1 className="numbering">
+          8. State변경하고 forceUpdate로 강제로 렌더링 시키기(검증과정 생략)
+          {/* state를 그냥 변경하였고 검증 과정 없이 forceUpdate로 리액트에 렌더링을 시킴 */}
+          {/* 단, 리액트 성능에 영향을 미치므로 매번 새롭게 출력해야하는 경우가 아니면 사용하기를 권하지 않는다고 되어있는데, 
+            추측컨데, setState로 부분만 변경하는게 아니라 아예 리엑트 엔진이 해당페이지를 처음부터 새로 그려내려가는 것으로 보임 
+            이후에 이를 다시 확인해야할 것으로 보임
+
+          */}
+        </h1>
+        <ForceUpdateExample />
+
+        <br></br>
+        <hr></hr>
+        <h1 className="numbering">8-1. State변경 Test</h1>
+        <ChangeStateTest />
+
+        <br></br>
+        <hr></hr>
+        <h1 className="numbering">9. lifeCycle</h1>
+        <LifeCycle />
       </div>
     );
   }
