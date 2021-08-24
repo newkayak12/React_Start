@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { shallowEqualObjects } from 'shallow-equal';
 
 class LifeCycle extends Component {
   /* 
@@ -21,7 +22,9 @@ class LifeCycle extends Component {
 	*/
   static getDerivedStateFromProps() {
     console.log('getDerivedStateFromProps 호출');
+    return {};
   }
+
   constructor(props) {
     super(props);
     console.log('constructor 호출');
@@ -34,7 +37,7 @@ class LifeCycle extends Component {
 
   componentDidMount() {
     console.log('componentDidMount 호출');
-    this.setState({ value: 'changed' });
+    this.setState({ updated: true });
   }
 
   //   componentWillReceiveProps(nextProps) {
@@ -72,7 +75,8 @@ class LifeCycle extends Component {
   }
 
   render() {
-    return <div>{this.state.value}</div>;
+    console.log('render 호출');
+    return null;
   }
 }
 

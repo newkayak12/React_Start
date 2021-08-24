@@ -10,8 +10,25 @@ import StateExample from './03Components/StateExample';
 import ForceUpdateExample from './03Components/ForceUpdateExample';
 import ChangeStateTest from './03Components/changeStateTest';
 import LifeCycle from './03Components/LifeCycle';
-
+import Counter from './03Components/Counter';
+import NewCounter from './03Components/NewCounter';
+import ShallowEquals from './03Components/shallowEquals/ShallowEquals';
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasDestroyed: false, count: 10 };
+    this.resetCount = this.resetCount.bind(this);
+    // bind 안 해주니까 내부에 있는 setState를 못 읽는구나.. bind가 뭘하려고 하는지 조금 이해할 수 있겠네
+    console.log(this.state);
+  }
+  componentDidMount() {
+    // this.setState({ hasDestroyed: true });
+    // 소멸주기 ...
+    console.log(this.state);
+  }
+  resetCount() {
+    this.setState(({ count }) => ({ count: count + 10 }));
+  }
   render() {
     return (
       <div>
@@ -91,7 +108,23 @@ class App extends Component {
         <br></br>
         <hr></hr>
         <h1 className="numbering">9. lifeCycle</h1>
-        <LifeCycle />
+        {this.state.hasDestroyed ? null : <LifeCycle />}
+
+        <br></br>
+        <hr></hr>
+        <h1 className="numbering">10. getDerivedStateFromProps() 의 동작 원리 알아보기</h1>
+        <div>
+          <p>counter</p>
+          <Counter count={this.state.count} />
+        </div>
+        <div>
+          <p>newcounter</p>
+          <NewCounter count={this.state.count} />
+          {/* NewCount 컴포넌트만 getDerivedStateFromProps으로 갱싱된 프로퍼티 갑을 동기화해서 newCounter만 초기화됨. */}
+        </div>
+        <button onClick={this.resetCount}>{this.state.count + 10}으로 초기화 </button>
+
+        <ShallowEquals></ShallowEquals>
       </div>
     );
   }
