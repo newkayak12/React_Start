@@ -62,5 +62,6 @@ class ShallowEquals extends Component {
     return <div></div>;
   }
 }
+/* git tokenTest */
 
 export default ShallowEquals;
