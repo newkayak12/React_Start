@@ -255,7 +255,7 @@ console.log(radius); // 15
 
 		//3. 완성된 인스턴스가 바인딩된 this가 암묵적으로 반환된다. 
 		//명시적으로 객체를 반환하면 암묵적인 this반환이 무시된다.
-		return{};
+		return {};
 	}
 
 	//인스턴스 생성. Rectangle 생성자 함수는 암묵적으로 this를 반환한다.
