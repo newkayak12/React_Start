@@ -179,3 +179,100 @@ console.log(getDiameter()); //10
 
 // circle.getDiameter();
 //TypeError : Cannot read property 'getDiameter' of undefined
+
+
+
+
+
+
+
+//new.target 연산자
+// new.target은  this와 유사하게 constructor인 모든 함수 내부에서 암묵적인 지역 변수와 같이 사용되며 메타 프로퍼티라고 부른다. 
+
+/*
+	함수 내부에서 new.target을 사용하면 new 연산자와 함께 생성자 함수로서 호출되었는지 확인할 수 있다.
+	new 연산자와 함께 생성자 함수로서 호출되면 함수 내부의 enw.target은 함수 자신을 가리킨다. new 연산자 없이 일반 함수로서 호출된 함수 내부의 new.target은 undefined이다. 
+	따라서 함수 내부에서 new.target을 사용해서 new 연산자 생성자 함수로 호출했는지 확인하여 그렇지 않은 경우 new 연산자와 함꼐 재귀 호출을 통해 생성자 함수로서 호출할 수 있다.
+*/
+
+//생성자 함수
+function Yj(name){
+	//이 함수가 new 연산자와 함께 호출되지 않았다면 new.target은 undefined다.
+	if(!new.target){
+		//new 연산자와 함께 생성자 함수를 재귀 호출하여 생성된 인스턴스를 반환한다.
+		return new Yj(name);
+	}
+
+	this.name = name;
+	this.getFreind = function(){
+		return name+"SH";
+	};
+}
+
+const yj = Yj("Yj");
+console.log(yj.getFreind());
+
+//이와 같이 new 연산자 없이 생성자 함수를 호출하여도 new.target을 통해서 생성자 함수로서 호출된다. >> 일반 함수로 호출되는 것을 막는다. 
+
+//>> 스코프 세이프 생성자 패턴((new.target은 ES6에 도입되어서 호환되지 않는 브라우저에서는 아래와 같이 한다.))
+//Scope-Safe Constructor Pattern
+
+function ScopeSafe(value){
+	//생성자 함수가 new 연산자와 함께 호출되면 함수의 선두에서 빈 객체를 생성하고
+	//this에 바인딩한다. 이때 this와 scopeSafe은 프로토 타입에 의해 연결된다. 
+
+	//이 함수가 new 연산자와 함께 호출되지 않았다면 이 시점의 this는 전역 객체 window를 가리킨다.
+	//즉, this와 scopeSafe은 프로토타입에 의해 연결되지 않는다. 
+
+	if(!(this instanceof scopeSafe)){
+		//new 연산자와 함께 호출하여 생성된 인스턴스를 반환한다.
+		return new ScopeSafe(value);
+	}
+
+	this.value = value;
+	this.getValue = function () {
+		return value+"Value";
+	}
+}
+
+// new 연산자 없이 생성자 함수를 호출하여도 생성자 함수로서 호출된다. 
+const scope = ScopeSafe("value")
+console.log(scope.getValue()); // 10
+
+
+/*
+new연산자와 함께 생성자 함수에 의해 생성된 객체(인스턴스)는 프로토타입에 의해 생성자 함수와 연결된다. 이를 이용해서 new 연산자와 함께 호출되었는지 확일할 수 있다. 
+
+
+참고로 대부분의 빌트인 생성자 함수(Object, String, Number, Boolean, Function, Array, Data, RegExp, Promise등)는 new 연산자와 호출되었는지를 확인 한 후 적절한 값으로 반환한다.
+즉, 빌트인 함수는 new없이 호출해도 new연산자와 함께 호출했을 때와 동일하게 동작한다. 
+*/
+
+
+//built-in
+let obj = new Object();
+console.log(obj); // {}
+
+obj = Object(); // {}
+console.log(obj)
+
+//일반
+let f= new Function('x', 'return x ** x');
+console.log(f) // f anonymous(x) {return x ** x}
+
+f=Function('x','return x ** x');
+console.log(f) // f anonymous(x) {return x ** x}
+
+
+//하지만 String, Number, Boolean 생성자 함수는 new 연산자와 함께 호출했을 때 String, Numberf, Boolean 객체를 생성하여 반환하지만 new 연산자 없이 호출하면 문자, 숫자, 불리언 값을 반환한다. 
+//이를 통해 데이터 타입을 변환하기도 한다.
+
+
+const str = String(123);
+console.log(str, typeof str); //123 String
+
+const num = Number('123');
+console.log(num, typeof num); //123 number
+
+const bool = Boolean('true');
+console.log(bool, typeof bool)// true boolean
