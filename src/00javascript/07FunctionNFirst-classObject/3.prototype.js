@@ -396,4 +396,49 @@ console.log(objsz); //{}
 //1. new.target이 undefined나 Object가 아닌경우
 // 인스턴스 >> foo.prototype >> Object.prototype순으로 프로토타입 체인이 생성된다.
 class Flow extends Object{}
-new Flow; //Flow{-09086 -  -=0}
+new Flow; //Flow{}
+
+//3. 인수가 전달된 경우에는 인수를 객체로 반환한다.
+// Number객체 생성
+objsz = new Object(123);
+console.log(objsz)//Number{123}
+
+//Strng객체 생성
+objsz = new Object('예진이')
+console.log(objsz)//String{예진이}
+
+//객체 리터럴이 평가될떄는 다음과 같이 추상 연상 OrdinaryObjectCreate를 호출하여 빈 객체를 생성하고 프로퍼티를 추가하도록 정의되어있다. 
+/*
+	이처럼 Object 생성자 함수 호출과 객체 리터럴의 평가는 추상 연산 OrdinaryyObjectCreate를 호출하여 빈 개겣르 생성하는 점에서 동일하나 new.target의 확인이나 프로퍼티를 추가하느 ㄴ처리 등 세부 내용은 다르다. 따라서 객체 리터럴에 의해 생성된 객체는 Obejct생성자 함수가 생성한 객체가 아니다. 
+
+	함수 객체의 경우 차이가 더 명확하다. Function생성자 함수를 호출하여 생성한 함수는 렉시컬 스코프를 만들지 않고 전역 함수인 것처럼 스코프를 생성하여 클로저도 만들지 않는다. 
+	따라서 함수 선언문고 ㅏ함수 표현식을 평가하여 함수 객체를 생성한 것은 Function 생성자 함수가 아니다. 하지만 constructot 프로퍼티를 통해 확인해보면 foo함수의 생성자 함수는 Function 생성자 함수이다. 
+*/
+
+//zoll 함수는 Function  생성자 함수로 생성한 함수 객체가 아니라 함수 선언문으로 생성했다.
+function zoll(){};
+
+//하지만 constructor 프로퍼티를 통해 확인해보면 함수 zoll의 생성자 함수는 Function생성자 함수이다.
+console.log(zoll.constructor === Function)
+
+/*
+	리터럴 표기법에 의해 생성된 개겣로 상속을 위해 프로토타입이 필요하다.
+	리터럴 표기법에 의해 생성된 객체도 가상적인 생성자 함수를 갖는다.
+	프로토타입은 생성자 함수오 ㅏ더불어 생성되며 prototype, constructor 프로퍼티에 의해 연결되어 있기 때문에
+
+	..... 프로토 타입과 생성자 함수는 단독으로 존재할 수 없고 언제나 쌍으로 존재한다. 
+
+
+	리터럴 표기법(객체 리터럴, 함수리터럴, 배열 리터럴, 정규표현식 리터럴 등) 에 의해 생성된 객체는 생성자 함수에 의해 생성뙨 객체는 아니다. 하지만 큰 틀에서 생각해보면 리터럴 표기법으로 생성한 객체도 생성자 함수로 생성한 객체와 본질적인 면에서 큰 차이가 없다. 
+
+	객체 리터럴에 의해 생성한 객체와 Object 생성자 함수에 의해 생성한 객체는 생성 과정에 미묘한 차이가 있지만 결국 객체로서 동일한 특성을 갖는다. 함수리터럴에 의해 생성한 함수와 Function 생성자 함수에 의해 생성한 함수는
+	생성 과정과 스코프, 클로저 등의 차이가 있지만 결국 함수로서 동일한 특성을 갖는다. 
+
+
+	리터럴 표기법		생성자 함수		프로토타입
+	-----------------------------------------------------
+	객체 리터럴		Object			Object.prototype
+	함수 리터럴		Function 		Function.prorotype
+	배열 리터럴		Array			Array.prototype
+	정규 표현식 리터럴	  RegExp		  RegExp.prototype
+*/
