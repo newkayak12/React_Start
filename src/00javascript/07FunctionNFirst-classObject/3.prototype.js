@@ -335,7 +335,7 @@ console.log(mmPpp.constructor === Ppp);//true
 
 
 const objects = new Object();
-console.log(objects.constructor === Obect);//true
+console.log(objects.constructor === Object);//true
 
 // add함수 객체를 생성한 생성자함수는 Function이다.
 const adds = new Function('a', 'b', 'return a+b');
@@ -442,3 +442,94 @@ console.log(zoll.constructor === Function)
 	배열 리터럴		Array			Array.prototype
 	정규 표현식 리터럴	  RegExp		  RegExp.prototype
 */
+
+
+
+//>> 프로토타입의 생성 시점
+/*
+	Object.create 메소드와 클래스에 의한 객체 생성
+	>> Object.create 메서드 클래스와 생성한 객체도 생성자 함수와 연결되어있다. 
+*/
+
+
+// 생성자 함수는 프로토타입과 언제나 쌍으로 존재한다.  생성자 함수는 사용자가 직접 정의한 사용자 정의 생성자 함수와 자바스크립트가 기본 제공하는 빌트인 생성자 함수로 구분할 수 있다. 
+
+
+/*
+	>>>사용자 정의 생성자 함수와 프로토타입 생성 시점
+
+	constructor와 non-constructor의 구분에서 살펴본 바와 같이 내부 메소드 [[construct]]를 갖는 함수 객체,
+	즉 화살표 함수나 ES6의 메소드 축약 표현으로 정의하지 않고 일반 함수(함수,선언문, 함수 표현식)으로 정의한 함수 객체는 new 연산자와 함께 생성자 함수로서 호출할 수 있다.
+
+	__ 생성자 함수로서 호출할 수 있는 함수, 즉 constructor는 함수 정의가 평가되어 함수  객체를 생성하는 시점에 프로토타입도 더불어 생성된다.
+*/
+
+// 함수 정의(constructor)가 평가되어 함수 객체를 새엇ㅇ하는 시점에 프로토타입도 더불어 생성된다. 
+	console.log('함수 객체를 생성하는 시점에 프로토타입도 더불어 생성')
+	console.log(Pprsn.prototype);
+	/*
+		{constructor: ƒ}
+		constructor: ƒ Pprsn(name)
+		[[Prototype]]: Object
+
+		브라우저 환경과 node 환경은 다르다. 
+	*/
+
+	function Pprsn(name){
+		this.name = name;
+	}
+
+	// 화상 함수는 non-constructor이다.
+	const Person5 = name =>{ this.name = name;} 
+	console.log(Person5.prototype)
+
+	/*
+		함수 선언문은 런타임 이전에 자바스크립트 엔진에 의해 먼저 실행된다. 따라서 함수 선언문으로 정의된 Person5 생성자 함수는 어떤 코드보다 먼저 평가되어 함수 객체가 된다.
+		이때 프로토타입도 더불어 생성된다.  생성된 프로토타입은 Person5 생성자 함수의 prototype프로퍼티에 바인딩 된다. 
+
+		새성된 프로토 타입은 오직 constuctor프로퍼티만 갖는 개체다. 프로토타입도 객체이고 모든 객체는 프로토타입을 가지므로 포로토타입도 자신의 프로토타입을 갖느다. 생성된 프로토타입의 프로토타입은 Object.prototype이다.
+
+
+		이처럼! 빌트인 생성자 함수가 아닌 사용자 정의 생성자 함수는 자신이 평가되어 함수 객체로 생성되는 시점에 프로토 타입도 더불어 생성되며, 생성된 프로토타입의 프로토타입은 언제나 Object.prototype이다. 
+	*/
+
+
+
+
+
+
+	//>>> 빌트인 생성자 함수와 프로토타입 생성 시점
+	/*
+		Object, String, Number, Function, Array, RegExp, Date, Promise 등과 같은 빌트인 생성자 함수도 일반 함수와 마찬가지로 빌트인 생성자 함수가 생성되는 시점에 프로토타입이 생성돈다. 
+		모든 빌트인 생성자 함수는 전역 객체가 생성되는 시점에 생성된다. 생성된 프로토타입은 빌트인 생성자 함수의 prototype 프로퍼티에 바인딩된다. 
+
+		전역 객체 : 전역개체는 코드가 실행되기 이전 단계에 자바스크립트 엔진에 의해 생성되는 특수한 객체다. 전역 객체는 클라이언트 사이드 환경에서는 window,  서버 사이트 환경(node)에서는 global 객체를 의미한다. 
+
+	*/
+	// 빌트인 객체인 object는 전역 객체 window의 프로퍼티이다. 
+	console.log(global.Object === Object)//true
+
+	/*
+		객체가 생성되기 이저넹 생성자 함수오 ㅏ프로토타입은 이미 객체화되어 존재한다. 
+		 이후 생성자 함수 또는 리터럴 표기법으로 객체를 생성하면 프로토타입은 생성된 객체의 [[Prototype]] 내부 슬롯에 할당된다. 
+		 이로써 생성된 객체는 프로토타입을 상속받는다. 
+	*/
+
+
+
+
+	
+
+
+	// 객체 생성 방식과 프로토타입의 결정
+	/*
+		객체 생성 방법에는 
+		1. 객체 리터럴
+		2. Object생성자 함수
+		3. 생성자 함수
+		4. Object.create메소드
+		5. 클래스(ES6)
+
+	이처럼 다양한 방식으로 생성된 모든 객체는 각 방식마다 세부적인 객체 생성 방식의 차이는 있으나 추상 연산 OrdinaryObjectCreate에 의해 생성된다는 공통점이 있다. 
+	*/
+
