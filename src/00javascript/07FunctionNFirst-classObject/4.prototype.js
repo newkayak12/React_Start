@@ -71,3 +71,46 @@ console.log(obj.hasOwnProperty('x')); //true
 
 //표준 빌트인 객체인 Object 생성자 함수와 더불어 생성된 프로토타입 Object.prototype은 다양한 빌트인 메소드(hasOwnProperty, propertyIsEnumerable 등)를 갖고 있다. 
 //하지만 사용자 정의 생성자 함수 Person과 더불어 생성된 프로토타입 Person.prototype의 프로퍼티는 constructor뿐이다.
+
+
+//프로토타입 Prsn.prototype에 프로퍼티를 추가하여 하위 객체가 상속받을 수 있도록 구현하면
+//프로토타입은 객체이다. 따라서 일반 객체와 같이 프로토타입에도 프로퍼티를 추가/삭제할 수 있다. 그리고 이렇게 추가/삭제된 프로퍼티는 프로토타입 체인에 즉각 반영된다. 
+
+//프로토타입 메소드 
+Prsn.prototype.sayHello = function(){
+	console.log(`Hi! My name is ${this.name}`);
+}
+
+const my = new Prsn('Lee');
+const you = new Prsn('Kim');
+
+my.sayHello();
+you.sayHello();
+
+//Prsn 생성자 함수를 통해 생성된 모든 객체는 프로토타입에 추가된 sayHello 메소드를 상속 자신의 메소드처럼 사용할 수 있다. 
+
+console.log(my.hasOwnProperty('name')); //true
+//Prsn 생성자 함수에 의해 생성된 my객체는 Object.prototype의 메소드인 hasOwnProperty를 호출할 수 있다.
+//이는 my객체가 Prsn.prototype뿐만 아니라 Object.prototype도 상속 받았다는 것을 의미한다.
+
+console.log(Object.getPrototypeOf(my) === Prsn.prototype);//true
+//Prsn.prototype의 프로토타입은 Object.prototype이다. 프로토타입의 프로토타입은 언제나 Object.prototype이다. 
+
+console.log(Object.getPrototypeOf(Prsn.prototype) === Object.prototype); //true
+
+/*
+	자바스크립트는 객체의 프로퍼티(메소드 포함)에 접근하려고 할 때 해당 객체에 접근하려는 프로퍼티가 없다. [[Prototype]]내부 슬롯의 참조를 따라 부모역할을 하는 프로토타입의 프로퍼티를 순차적으로 검색한다.
+
+	이를 프로토타입 체인이라고한다. 
+
+	프로토타입 체인은 자바스크립트가 객체지향 프로그래밍의 상속을 구현하는 메커니즘이다. 
+*/
+
+
+// CALL 메소드
+/*
+	Call 메소드는 this로 사용할 객체를 전달하면서 함수를 호출한다. 
+
+	프로토타입 체인의 최상위에 위치하는 객체는 언제나 Object.prototype이다. 따라서 모든 객체는 Object.prototype을 상속받는다. Obejctprototype을 프로토토타입 체인의 종점이라고 한다.
+	Object.prototype의 프로토타입 즉 [[Prototype]] 내부 슬롯의 값은 null이다.
+*/
