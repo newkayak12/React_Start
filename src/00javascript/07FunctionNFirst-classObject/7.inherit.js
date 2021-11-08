@@ -40,7 +40,7 @@ console.log(Object.getPrototypeOf(obj) === Object.prototype);//true
 const myProto = {x:10};
 //임의의 객체를 직접 상속받는다. 
 //obj -> myProto -> Obejct.prototype -> null
-obj = Object.creater(myProto);
+obj = Object.create(myProto);
 console.log(obj.x); //10
 console.log(Object.getPrototypeOf(obj) === myProto ); //true
 
@@ -78,17 +78,17 @@ console.log(Object.getPrototypeOf(obj) === Person.prototype); //true
 */
 
 	// 프로토타입이 null인 객체, 즉 프로토타입 체인의 종점에 위치하는 객체를 생성한다.
-	const obj = Object.create(null);
-	obj.a = 1;
+	const obj1 = Object.create(null);
+	obj1.a = 1;
 
-	console.log(Object.getPrototypeOf(obj)===null);//true
+	console.log(Object.getPrototypeOf(obj1)===null);//true
 
 	//obj는 Objet.prototype의 빌트인 메소드를 사용할 수 없다.
 	// console.log(obj.hasOwnPropety('a'));
 	//typeError: obj.hasOwnProperty is not a function 
 
 	//Object.prototype의 빌트인 메소드는 객체로 직접 호출하지 않는다.
-	console.log(Object.prototype.hasOwnProperty.call(obj,'a'));
+	console.log(Object.prototype.hasOwnProperty.call(obj1,'a'));
 
 
 	//>>  객체 리터럴 내부에서 __proto__에 의한 직접 상속
@@ -97,15 +97,15 @@ console.log(Object.getPrototypeOf(obj) === Person.prototype); //true
 		ES6에서는 객체 리터럴 내부에서 __proto__ 접근자 프로퍼티를 사용하여 직접 상속을 구현할 수 있다. 
 	*/
 
-	const myProto = {x:10};
+	const myProtos = {x:10};
 	
 
 	//객체 리터럴에 의해 객체를 생성하면서 프로토타입을 지정하여 직접 상속받을 수 있다.
 	const objs  = {
-		y:20;
+		y:20,
 		//객체를 직접 상속 받는다. 
 		//objs -> myProto -> Object.prototype -> null
-		__proto__ : myProto
+		__proto__ : myProtos
 	};
 
 	/*
@@ -116,7 +116,7 @@ console.log(Object.getPrototypeOf(obj) === Person.prototype); //true
 	*/
 
 	console.log(objs.x, objs.y); //10, 20
-	console.log(Object.gerPrototype(obj) === myProto); //true
+	console.log(Object.getPrototypeOf(obj) === myProtos); //true
 
 
 
@@ -150,11 +150,11 @@ Tk.apply.staticMethod = function(){
 const gms = new Tk(7);
 
 //생성자 함수에 추가한 정적프로퍼티/ 메소드는 생성자 함수로 참조/호출한다.
-Tk.staticMethod() // staticMethod
+// Tk.staticMethod() // staticMethod
 
 //정적 플오퍼티/메소드는 생성자 함수가 생성한 인스턴스로 참조/호출할 수 없다. 
 //인스턴스로 참조/호출할 수 있는 프로퍼티/메소드는 프로토타입 체인 상에 존재해야한다. 
-gms.staticMethod(); //TypeError: me.staticMethod is not a functions
+// gms.staticMethod(); //TypeError: me.staticMethod is not a functions
 
 /*
 	인스턴스/프로토타입 메소드 내에 this를 사용하지 않는다면 그 메소드는 정적 메소더르 변경할 수 있다. 
@@ -357,3 +357,20 @@ arr.forEach(v=>{
 for(const value of arr){
 	console.log(value); //1,2,3,4
 }
+
+//Object.keys / values / entreis 메소드
+/**
+ * for ... in 은 객체 자신의 고유 프로퍼티뿐 아니라 상속받은 프로퍼티도 열거한다. >> Object.prototype.hasOwnProperty 메소드를 사용해서 자신의 프로퍼티인지 처리할 필요가 있을 수도 있다. 
+ * 
+ * 따라서 객체 자신의 고유 프로퍼티만 열거하려면 for...in 문보다는 Object.keys/values/entries 메소드 사용하는 것이 바람직하다. 
+ * 
+ * Object.keys 메소드는 객체 자신의 열거 가능한 프로퍼티 키를 배열로 반환한다. 
+ */
+
+console.log(Object.keys(People)); // [ 'name', 'address' ]
+console.log(Object.values(People)); //[ 'LEE', 'Seoul' ]
+Object.entries(People).forEach(([key,value]) => console.log(`[${key}]  : ${value}`)) 
+/**
+ * [name]  : LEE
+ * [address]  : Seoul
+ */
