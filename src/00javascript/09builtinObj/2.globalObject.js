@@ -234,3 +234,40 @@ console.log(x); //1
 	encodeURIComponent는 알파벳,0~9의 숫자 - _ . ! ~ * ' ( ) 를 제외한 문자를 이스케이프 처리
  * 
  */
+
+
+	
+	
+	
+	//>> 암묵적 전역
+	console.log(zx); //undefined > 전역 변수는 호이스팅이 발생한다.
+	// console.log(zy); //ReferenceError : zy is not defined > 전역 객체의 프로퍼티는 호이스팅이 발생하지 않는다. 
+
+
+	var zx = 10; //전역 변수
+
+	function implicitFunc(){
+		// 선언하지 않는 식별자에 값을 할당
+		zy = 20; // window.zy = 20;
+	}
+	implicitFunc();
+
+	//선언하지 않는 식별자 Y를 전역에서 참조할 수 있다.
+	console.log(zx+zy); // 30 >> zy가 전역 객체의 프로퍼티가 된다. 그냥 선언하면
+	/**
+	 * implicitFunc이 시작되면 zy를 할당하기 위해 스코프 체인을 통해서 선언된 변수인지 확인한다. 
+	 * 그러나 어디에서 찾을 수 없으므로 참조 에러가 발생한다. 
+	 * 
+	 * zy는 전역 객체의 프로퍼티가 되어 마치 전역 변수처럼 동작한다. 이러한 현상을 암묵적 전역이라고 한다. 
+	 * 그러나 zy는 변수 선언 없이 단지 전역 객체의 프로퍼티로 추가되었을 뿐이다. 따라서 zy는 변수가 아니라 zy는 변수가 아니므로 변수 호이스팅이 발생하지 않는다. 
+	 */
+
+	console.log(window.zx);
+	console.log(window.zy);
+
+
+	delete zx; // 전역 변수는 삭제되지 않는다.
+	delete zy; // 프로퍼티는 삭제된다.
+
+	console.log(window.zx); //10
+	console.log(window.zy); //undefined
