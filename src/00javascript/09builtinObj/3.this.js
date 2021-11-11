@@ -136,5 +136,102 @@ const me = new Persons('lee');
 
 
 
+
+
+
+
+
 //>> 함수 호출 방식과 this 바인딩
 //this 바인딩(this에 바인딩 될 값)은 함수 호춣 방식, 즉 함수가 어떻게 호출되었는지에 따라 동적으로 결정된다.
+
+
+/**
+ *  >>  렉시컬 스코프와 this 바인딩은 결정 시기가 다르다.
+ * 함수의 상위 스코프를 결정하는 방식인 렉시컬 스코프는 함수 정의가 평가되어 함수 객체가 생성되는 시점에 사우이 스코프를 결정한다.
+ * 
+ * this바인딩은 함수 호출 시점에 결정된다. 
+ * 1. 일반 함수 호출
+ * 2. 메소드 호출
+ * 3. 생성자 호출
+ * 4. Function.prototype.apply/call/bind 메소드에 의한 간접 호출
+ */
+
+
+
+//this 바인딩은 함수 호출 방식에 따라 동적으로 결정된다. 
+const zul = function(){
+	console.dir(this);
+};
+
+//동일한 함수도 다양한 방식으로 호출할 수 있다. 
+
+
+//1. 일반 함수 호출 
+// zul함수를 일반적인 방식으로 호출
+// zul함수 내부의 this는 전역 객체 window를 가리킨다.
+zul(); //window
+
+//2. 메소드 호출
+//zul 함수를 프로퍼티 값으로 할당하여 호출
+//zul 함수 내부의 this는 메소드를 호출한 객체 objz를 가리킨다. 
+const objz = {zul};
+objz.zul(); //objz
+
+//3. 생성자 함수 호출
+//zul 함수를 new 연산자와 함께 생성자 함수로 호출
+//zul 함수 내부의 this는 생성자 함수가 생성한 인스턴스를 가리킨다. 
+new zul(); // zoo{}
+
+//4. Function.prototype.apply/call/bind 메소드에 의한 간접 호출 
+// zul 함수 내부의 this는 인수에 의해 결정된다. 
+const vvar = {name : 'bar'};
+
+zul.call(bar); //bar
+zul.apply(bar); //bar
+zul.bind(bar)(); //bar
+
+
+
+// 2.1 일반 함수 호출
+// this에는 전역 객체가 바인딩된다.
+
+function zol(){
+	console.log(`zol's this : ${this}`); //window
+
+	function zar(){
+		console.log(`zar's this : ${this}`); //window
+	}
+	zar()
+}
+zol();
+//중첩 함수를 일반함수로 호출하면 함수 내부의 this에는 전역 객체가 바인딩된다.
+//strict mode에서는 undefined
+
+
+// var 키워드로 선언한 전역 변수 value는 전역 객체의 프로퍼티
+var balue = 1;
+//const 키워드로 선언한 전역 변수 value는 전역 객체의 프로퍼티가 아니다.
+const dalue = 1;
+
+const obz = {
+	balue : 100,
+	poo(){
+		console.log("foo's this : ", this); // {balue:100, poo:f}
+		console.log("foos' this.balue", this.balue); //100
+
+		//메소드 내에서 정의한 중첩 함수
+		function par(){
+			console.log("par 's this : ", this); //window
+			console.log("par's this.value:", this.balue)// window.balue / 1
+		}
+		par()
+
+		setTimeout(function(){
+			console.log("callback's this:", this); //window
+			console.log("callback's this.value:", this.balue);//window.balue//1
+		},100)
+	}
+};
+obz.poo();
+//콜백 함수가 일반 함수로 호출된다면 콜백 함수 내부의 this에도 전역 객체가 바인딩된다. (어떠한 함수라도 일반 함수로 호출되면 this전역객체가 바인딩된다. )
+//이처럼 일반 함수로 호출된 모든 함수(중첩 함수, 콜백 함수 포함) 내부의  this에는 전역 객체가 바인딩된다. 
