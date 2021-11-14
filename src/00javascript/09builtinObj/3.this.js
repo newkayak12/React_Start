@@ -229,9 +229,55 @@ const obz = {
 		setTimeout(function(){
 			console.log("callback's this:", this); //window
 			console.log("callback's this.value:", this.balue);//window.balue//1
+			// 위와 같이 콜백 함수가 가리키는 this가 window가 된다. 만약 외부 함수가 가리키는 객체를 바인하고 싶다면 어떠헥 해야하는가?
+			/*
+			>>>>>>>>>>>>>>>> this 변수를 that에 할당하고 해당 식별자를 사용한다.
+
+				 const that = this;
+
+				하고 이를 콜백함수에서 that을 통해서 사용한다. 
+			*/
 		},100)
 	}
 };
 obz.poo();
 //콜백 함수가 일반 함수로 호출된다면 콜백 함수 내부의 this에도 전역 객체가 바인딩된다. (어떠한 함수라도 일반 함수로 호출되면 this전역객체가 바인딩된다. )
 //이처럼 일반 함수로 호출된 모든 함수(중첩 함수, 콜백 함수 포함) 내부의  this에는 전역 객체가 바인딩된다. 
+// 하지만 메드 내서 정의한 중첩 함수 또는 메소드에게 전달한 콟백함수가 일반 함수로 호출될 때 메소드 내의 중첩 함수 또는 콜백 함수의 this가 전역 객체를 바인딩하는 문제가 있다 .
+// 이러한 문제는 콜백 함수의 this가 일치하지 않는 다는 것은 중첩 함수 또는 콜백 함수를 헬퍼 함수로 동작하기 어렵게 만든다. 
+// 따라서 이를 해결하기 위해서 외부 함수에서 this를 변수로 할당하여, 내부 함수에서 사용하는 방법이있다. 
+
+
+/**
+ * 혹은 Function.prototype.apply, Function.prototype.call, Function.prorotype.bind메소드를 사용해서 this 바인딩을 일치시킬 수 있다. 
+ * 
+ * 또는! 화살표 함수로 상위 스코프의 this를 가져다 쓸 수도 있다.
+ */
+
+// bind
+var values = 1;
+const objec = {
+	values:100,
+	fool(){
+		//콜백 함수에 명시적으로 this를 바인딩한다.
+		setTimeout(function(){
+			 console.log(this.values);
+		}.bind(this), 100)
+	}
+}
+objec.fool()
+
+//화살표 함수
+
+var values = 1;
+const  objecs = {
+	values:100,
+	fool(){
+		//화살표 함수 내부의 this는 상위 스코프의 this를 가리킨다.
+		setTimeout(()=>{
+			console.log(this.values); //100
+		},100) 
+	}
+
+}
+objecs.fool()
