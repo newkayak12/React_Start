@@ -281,3 +281,220 @@ const  objecs = {
 
 }
 objecs.fool()
+
+
+
+
+// 메소드 호출
+/**
+ * 메소드 내부의 this에는 메소드를 호출한 객체, 즉 메소드를 호출 할 때 메소드 이름 앞의 마침표 연산자 앞의 기술된 객체가 바인딩 된다. 
+ *  Object.Methods() --> this는 object에 바인딩된다.
+ * 
+ *  주의할 것은 메소드 내부의 this는 메소드를 소유한 객체가 아닌 메소드를 호출한 객체에 바인딩된다.
+ */
+
+const peopleOne = {
+	name:'Lee',
+	getName(){
+		//메소드 내부의 this는 메소드를 호출한 객체에 바인딩된다.
+		return this.name;
+	}
+};
+
+//메소드 getName을 호출한 객체는 person이다.
+console.log(peopleOne.getName());// Lee
+
+/**
+ *  함수 객체는 peopleOne객체에 포함된 것이 아니라 독립적으로 존재하는 별도의 객체이다.
+ * getName 프로퍼티가 함수 객체를 가리키고 있을 뿐이다.
+ * ( 메소드가 객체에 포함된 것이 아니라 독립적으로 해당 프로퍼티로 존재하는 것 )
+ * 
+ * 따라서  getName프로퍼티가 가리키는 함수 객체, 즉 getName메소드는 다른 객체의 프로퍼티에 할당하는 것으로 다른 객체의 메소드가 될 수 있고
+ * 일반 변수에 할당하여 일반 함수로 호출될 수도 있다.
+ * 
+ * 
+ */
+
+const anotherPerson = {
+	name: "Kim"
+}
+//getName 메소드를 anotherPerson 객체의 메소드로 할당
+anotherPerson.getName = peopleOne.getName;
+
+//getName메소드를 호출한 객체는 anotherPerson
+console.log(anotherPerson.getName());//Kim >> anotherPerson 객체가 호출했다. 
+
+
+//getName메소드를 변수에 할당
+const getName = peopleOne.getName;
+//일반 함수로 호출
+console.log(getName()); // '' >> this.name === global.name || window.name (브라우저 환경에서 window.name은 브라우저 창의 이름을 나타내는 빌트인 프로퍼티이며 기본값은 '')
+
+// 이와 같이 메소드 내부의 this는 프로퍼티로 메소드를 가리키고 있는 관계가 없고 메소드를 호출한 객체에 바인딩된다.
+
+
+function ZPerson(name){
+	this.name = name;
+}
+
+ZPerson.prototype.getName = function(){
+	return this.name;
+}
+
+const me = new ZPerson('lee');
+
+//getName 메소드를 호출한 객체는 me이다.
+console.log(me.getName()); // lee
+
+ZPerson.prototype.name = "PARK"
+//getName 메소드를 호출한 객체는 ZPerson.prototype이다.
+console.log(ZPerson.prototype.getName()); // PARK
+
+
+
+
+
+
+
+
+
+
+
+
+
+//>> 생성자 함수 호출
+// 생성자 함수 내부의 this에는 생성자 함수가 (미래에) 생성할 인스턴스가 바인딩된다. 
+
+//생성자 함수
+function Circles (radius){
+	//생성자 함수 내부의 this는 생성자 함수가 생성할 인스턴스를 가리킨다. 
+	this.radius = radius;
+	this.getDiameter = function(){
+		return 2* this.radius
+	}
+};
+
+const circles1 = new Circles(6);
+const circles2 = new Circles(10);
+
+console.log(circles1.getDiameter())
+console.log(circles2.getDiameter())
+
+// 생성자 함수는 이름 그대로 객체(인스턴스)를 생성하는 함수이다. 일반 함수와 동일한 방법으로 생성자 함수를 정의하고
+// new 연산자와 함께 호출하면 해당 함수는 생성자 함수로 동작한다. 
+// 만약 new 연산자와 함께 생성자 함수를 호출하지 않으면 생성자 함수가 아니라 일반 함수로 동작한다. 
+
+//new 연산자와 함께 호출하지 않으면 생성자 함수로 동작하지 않는다. 즉, 일반적인 함수의 호출이다
+const circlez = Circles(15);
+
+//일반 함수로 호출된 circle에 반환문이 없으므로 암묵적으로 undefined로 반환
+console.log(circlez);
+
+//일반 함수로 호출된 circle 내부 this는 전역 객체를 가리킨다. 
+console.log(radius)
+
+
+//Function.prototype.apply/call/bind 메소드에 의한 간접 호출
+//apply, call, bind 메소드는 Function.prototypez의 메소드이다. 이들 메소드는 모든 함수가 상속받아 사용할 수 있다.
+
+
+function getThisBinding(){
+	console.log(arguments);
+	return this;
+}
+
+//this로 사용할 객체
+const thisArg = {a:1};
+
+console.log(getThisBinding());//window
+
+//getThisBinding 함수를 호출하면서 인수로 전달한 객체를 getThisBiding 함수의 this에 바인딩한다.
+console.log(getThisBinding.apply(thisArg)); //{a:1}
+
+console.log(getThisBinding.call(thisArg));   //{a:1}
+
+// apply/ call 메소드는 함수를 호출하면서 첫 번째 인수를 전달한 특정 객체를 호출한 함수의 this에 방인된다.
+// apply과 call의 차이점은 인수 전달 방식에 있다.
+
+console.log(getThisBinding.apply(thisArg,[1,2,3]));
+//Arguments(3) [1,2,3, callee: f, Symbol(Symbol.iterator):f]
+//> apply는 호출할 함수의 인수를 배열로 묶어서 전달한다.
+
+
+console.log(getThisBinding.call(thisArg,1,2,3));
+//Arguments(3) [1,2,3, callee: f, Symbol(Symbol.iterator):f]
+//>call은 인자를 쉼표로 구분한 리스트 형식으로 전달한다. 
+
+
+// apply, call은 인수를 전달하는 방식만 다를 뿐 this로 사용할 객체를 전달하면서 함수를 호출하는 것은 동일하다.
+//apply, call 메소드의 대표적 용도는 arguments객체와 같은 유사배열 객체에 배열 메소드를 사용하는 경우이다. arguments객체는 배열이 아니기 때문에 Array.prototype.slice같은 배열 메소드를 사용할 수 없으나 apply/ call은 가능하다. 
+
+
+function convertArgsToArray(){
+	console.log(arguments);
+
+	//arguments 객체를 배열로 변환
+	//Array.prorotype.slice를 인수 업시 호출하면 배열의 복사본을 생성한다. 
+	const arr = Array.prototype.slice.call(arguments);
+	//const arr = Array.prototype.slice.apply(arguments);
+
+	console.log(arr);
+
+	return arr;
+}
+
+convertArgsToArray(1,2,3,4);//[1,2,3,4]
+
+
+
+//Function.prototype.bind메소드는 함수를 호출하지 않고 this로 사용할 객체만 전달한다. 
+
+function getThisBindgins(){
+	return this;
+}
+
+//this로 사용할 객체
+const thisArgs={a:1};
+
+//bind메소드는 함수에 this로 사용할 객체를 전달한다.
+// bind메소드는 함수를 호출하지 않는다.
+console.log(getThisBindgins.bind(thisArgs)); //getThisBindings
+// bind메소드는 함수를 호출하지는 않으므로 명시적으로 호출해야한다.
+console.log(getThisBindgins.bind(thisArgs)()); // {a:1}
+
+// bind메소드는 메소드의 this와  메소드 내부의 중첩 함수 또는 콜백 함수의 this가 불일치하는 문제를 해결 하기 위해 유용하게 사용된다. 
+
+
+const yjIsLove = {
+	name : 'YJ',
+	isLove(callBack){
+		// 여기까지는 this가 yjIsLove라는 객체를 가리키고 있다.
+		setTimeout(callBack,100);
+		// 이후로 this는 전역 객체를 가리킨다. (콜백 함수 내부에서 this.name은 window.name이 된다.)
+		// 문제는 대부분은 콜백 함수가 헬퍼 함수로 역할을 하기 때문에 내부의 this와 콜백의 this가 다르면 문맥상 곤란한 상황이 연출된다. 
+		// 이때 bind를 사용해서 일치시켜줄 수 있다.
+		
+		
+		setTimeout(callBack.bind(this),100);
+	}
+};
+
+yjIsLove.isLove(function() {
+	console.log(`hi! my name is ${this.name}.`)// hi my name is YJ
+	//일반 함수로 호출된 콜백 함수 내부의  this.name은 브라우저 환경에서 window.name과 같다.
+	//브라우저 환경에서 window.name은 브라우저 창의 이름을 나타내는 빌트인 프로퍼티이다. 
+	// nodejs 는 undefined
+})
+
+
+/**
+ * ------------------------------------------------------------------
+ *  	함수 호출 방식 			/ 	this 바인딩
+ * -----------------------------------------------------------------
+ * 	일반 함수 호출			/ 	 전역 객체                       
+ * 	메소드 호출     	       /	메소드가 호출한 객체
+ * 	생성자 함수 호출 		/ 	생성자 함수가 (미래에) 생성할 인스턴스      
+ *	Function.prorotype.apply    / 
+ *	/call/ bind 		    /	   Function.prototype.apply/call/bind
+ *	에 의한 간접 호출		/	메소드에 첫 번쨰 인수로 전달한 객체
+ */
