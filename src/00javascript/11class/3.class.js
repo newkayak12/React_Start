@@ -400,3 +400,54 @@ const subDecl = {
 }
 
 //2 서브클래스의 정적 메소드 내에서 super.sayHi는 수퍼클래스의 정적 메소드 sayHi를 가진다. 
+
+
+
+
+
+//>>>>상속 클래스의 인스턴스 생성 과정
+class Rectangle{
+	construct(width, height){
+		this.width = width;
+		this.height = height;
+	}
+	getArea(){
+		return this.width*this.height
+	}
+	toString(){
+		return `width = ${this.width}, height = ${this.height}`;
+	}
+}
+
+class ColorRectangle extends Rectangle{
+	constructor(width, height, color){
+		super(width,height);
+		this.color = color;
+	}
+	toString(){
+		return super.toString() + `,color = ${this.color}`
+	}
+}
+
+const colorRectangle = new ColorRectangle(2,4,'red');
+console.log(colorRectangle);
+
+// 상속을 통해 getArea 메소드 호출
+console.log(colorRectangle.getArea());
+// 오버라이딩된 toString 메소드를 호출
+console.log(colorRectangle.toString());
+
+
+
+
+/**
+ * 1. 서브클래스의  super호출
+ * 클래스를 평가할 때 수퍼클래스와 서브클래스를 구분하기 위해  "base" 또는 "derive"를 값으로 갖는 내부 슬롯 [[ConstructorKind]]를 갖는다. 
+ * 다른 클래스를 상속받지 않는 클래스는 내부 슬롯 [[ConstructorKind]]의 값이 "base"로 설정되지만 
+ * 다른 클래스를 상속받는 서브클래스는 내부 슬롯 [[ConstructorKind]]의 값이 "derived"로 설정된다. 
+ * 이를 통해 수퍼클래스와 서브클래스는 new 연산자와 함께 호출되었을 때의 동작이 구분된다. 
+ * 
+ * 다른 클래스를 상속받지 않는 클래스는 new연산자와 함께 호출되었을 때 암묵적으로 빈 객체, 즉 인스턴스를 생성하고 이를 this에 바인딩한다.
+ * 하지만 서브클래스는 자신이 직접 인스턴스를 생성하지 않고 수퍼클래스에게 인스턴스 생성을 위임한다. 
+ * 이것이 바로 서브클래스의 constructor에서 반드시 super를 호출해야하는 이유이다.
+ */
