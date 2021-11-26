@@ -463,5 +463,34 @@ console.log(colorRectangle.toString());
  * 
  * 
  * 3. 수퍼 클래스의 인스턴스 초기화
- * 수퍼클래스의 constructor가 실행되어 this에 바인딩되어 있는 인스턴스를 초기화한다..
+ * 수퍼클래스의 constructor가 실행되어 this에 바인딩되어 있는 인스턴스를 초기화한다. 즉, this에 바인딩 되어 있는 인스턴스에 프로퍼티를 추가하고
+ * constructor가 인수로 전달받은 초기값으로 인스턴스의 프로퍼티를 초기화한다. 
+ * 
+ * 
+ * 
+ * 4. 서브클래스 constructor로의 복귀와 this 바인딩
+ * super의 호출이 종료되고 제어 흐름이 서브클래스 constructor로 돌아온다. 이때 super가 반환한 인스턴스가 this에 바인딩된다. 서브 클래스는 별도의 인스턴스를 생성하지 않고
+ * super가 반환한 인스턴스를 this에 바인딩하여 그대로 사용한다. 
+ * 
+ * 
+ * 	class ColorRectangle extends Rectangle{
+ * 		constructor(width, heigth, color){
+ * 			super(width,height);
+ *		}
+			//super가 반환한 인스턴스가 this에 바인딩된다.
+		console.log(this)
+ * 	}
+ *
+ * 
+ * 		이처럼 super가 호출되지 않으면 인스턴스가 생성되지 않으며, this 바인딩도 할 수 없다. 
+ * 		서브클래스의  constructor에서 super를 호출하기 전에는 this를 참조할 수 없는 이유가 바로 이 때문이다.
+ * 		따라서 서브클래스 constructor 내부의 인스턴스 초기화는 반드시 super홏울 이후에 처리되어야만 한다.
+ * 
+ * 5. 서브클래스의 인스턴스 초기화
+ * super호출 이후, 서브클래스의  constructor에 기술되어 있는 인스턴스 초기화가 실행된다. 
+ * 즉, this에 바인딩 되어있는 인스턴스에 프로퍼티를 추가하고 constructor가 인수로 전달받은 초기값으로 인스턴스의 프로퍼티를 초기화한다.
+ * 
+ * 
+ * 6. 인스턴스 반환
+ * 클래스의 모든 처리가 끝나면 완성된 인스턴스가 바인딩된 this가 암묵적으로 반환된다. 
  */
