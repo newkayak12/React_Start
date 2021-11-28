@@ -228,4 +228,36 @@
 				 * 		return that.prefix + ' ' + item;
 				 * 	})
 				 * }
+				 * 
+				 * 02. Array.prorotype.map의 두 번째 인수로 add메소드를 호출한  prefixer객체를 가리키는 this를 전달한다.
+				 * 
+				 * add(arr){
+				 * 	return arr.map(function(item){
+				 * 		return this.prefix + ' ' + item;
+				 * 	},this) //this에 바인딩된 ㄱ밧이 콜백 함수 내부의 this에 바인딩된다.
+				 * }
+				 * 
+				 * 03. Function.prototype.bind 메소드를 이용해서 add메소드를 호출한 prefixer객체를 가리키는 this를 바인딩한다.
+				 * add(arr){
+				 * 	return arr.map(function(item){
+				 * 		return this.prefix + ' ' + item
+				 * 	}.bind(this))//this에 바인딩된 ㄱ밧이 콜백 함수 내부의 this에 바인딩된다. 
+				 * }
+				 * 
+				 * 04. ES6에서 화살표 함수를 사용하여 콜백 함수 내부의 this 문제를 해결하기 
+				 * 
+				 * class Prefixer{
+				 * 	constructor(prefix){
+				 * 		this.prefix = prefix
+				 *	 }
+				 *	add(arr){
+				 *		return arr.map(item=>this.prefix + item) 
+				 *	}
+				 * }
+				 * 
+				 * const prefixer = new Prefixer('-webkit-');
+				 * console.log(prefixer.add(['transition', 'user-select']));
+				 * 
+				 * 
+				 * 화살표 함수는 함수 자체의 this 바인딩을 갖지 않는다. 따라서 화살표 함수 내부에서 this를 찾조하면 상위스코프의 this를 그대로 참조한다. 이를 lexcial this라고 한다. 
 				 */
