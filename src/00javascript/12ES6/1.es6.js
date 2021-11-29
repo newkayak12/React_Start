@@ -197,7 +197,7 @@
 						//add 메소드는 인수로 전달된 배열 arr을 순회하며 배열에 요소 추가
 						//[1] this는 메소드를 호출한 객체를 가리킨다. 
 						return arr.map(function(item){
-							return this.prefix + item; //[2] this는 undefined를 가리킨다. Array.prototype.map 메소드가 콜백 함수를 일반 함수로서 호춣하기 때문이다. 
+							// return this.prefix + item; //[2] this는 undefined를 가리킨다. Array.prototype.map 메소드가 콜백 함수를 일반 함수로서 호춣하기 때문이다. 
 							// > TypeError
 						})
 					}
@@ -260,4 +260,210 @@
 				 * 
 				 * 
 				 * 화살표 함수는 함수 자체의 this 바인딩을 갖지 않는다. 따라서 화살표 함수 내부에서 this를 찾조하면 상위스코프의 this를 그대로 참조한다. 이를 lexcial this라고 한다. 
+				 * 이는 마치 렉시컬 스코프와 같이 화살표 함수의  this가 함수가 정의된 위치에 의해 결정된다는 것을 의미한다. 
+				 * 
+				 * 
+				 * 화살 함수를 제외한 모든 함수에서 this 바인딩이 존재한다. 따라서 ES6에서 화살표 함수가 도입되기 이전에는 일반적인 식별자처럼 스코프 체인을 탐색할 필요가 없었다. 
+				 * 하지만 화살표 함수는 함수 자체의 this바인딩이 존재하지 않는다. 따라서 화살표 함수 내부에서 this를 참조하면 일반적인 식별자처럼 스코프 체인을 통해 상위 스코프에서 this를 탐색한다.
+				 * 
+				 * 
+				 * ()=>this.x // 상위 스코프의 this를 참조한다.
+				 * (function () {return this.x;}).bind(this); //익명 함수에 상위 스코프의 this를 주입한다. 위 화상표 함수와 동일하게 동작한다. 
+				 * 
+				 * 만약 화살표 함수가 중첩되어 있다면 상위 화살표 함수에도 this바인딩이 없으므로 스코프체인 상에서 가장 가까운 상위 함수 중에서 화살표 함수가 아닌 함수의  this를 참조한다. 
+				 * 
+				 * ex)
 				 */
+					//중첩 함수의 foo의 상위 스코프는 즉시 실행 함수이다. 
+					//따라서 화살표 함수의 foo의 this는 상위 스코프인 즉시 실행 함수의 this를 가리킨다.
+					(function(){
+						const foo = () =>console.log(this)
+						foo();
+					}).call({a:1}); //{a:1}
+
+		
+					//bar 함수는 화살표 함수를 반환한다.
+					//bar 함수가 반환한 화살표 함수의 상위 스코프는 화살표 함수 bar이다. 
+					//하지만 화살표 함수는 함수 자체의  this 바인딩을 갖지 않으므로 bar함수가 반환한 
+					// 화살표 함수 내부에서 참조하는 this는 화살표 함수가 아닌 즉시 실행 함수의 this를 가리킨다.
+
+					(function(){
+						const bar = () => () => console.log(this);
+						bar()();
+					}).call({a:1}); //{a:1}
+
+				// 만약 화살표 함수가 전역 함수라면 화살표 함수의  this는 전역 객체를 가리킨다. 
+				//전역 함수의 상위 스코프는 전역이고 전역에서 this는 전역 객체를 가리키기 떄문이다.
+
+					//전역 함수 foo의 상위 스코프는 전역이므로 화살표 함수 foo의 this는 전역 객체를 가리킨다.
+					const foo1 = () => console.log(this);
+					foo1();//Window {0: global, 1: global, 2: global, 3: global, 4: global, 5: global, 6: global,
+							// 7: global, 8: global, window: Window, self: Window, document: document, name: '', location: Location, …}
+					
+					// 프로퍼티에 할당한 화살표 함수도 스코프 체인 상에서 가장 가까운 상우 ㅣ함수 중에서 화살표 함수가 아닌 함수의 this를 참조한다.
+
+					//Ex)
+					// increase 프로퍼티에 할당한 화살표 함수의 상위 스코프는 전역이다.
+					// 따라서 increase 프로퍼티에 할당한 함수 의 this는 전역 객체를 가리킨다. 
+					const counter ={
+						num : 1, 
+						increase : () => ++this.num
+					};
+
+					console.log(counter.increase()); //NaN
+
+					//화살표 함수는 함수 자체의 this바인딩을 갖지 않기 때문에 Function.prototype.call, Function.prototype.apply, Function.prototype.bind 메소드를 사용해도 화살표 함수 내부의  this를 교체할 수 없다. 
+
+					// window.x = 1;
+					const normal1 = function () {return this.x};
+					const arrow = () => this.x;
+
+					console.log(normal1.call({x:10})); //10
+					console.log(arrow.call({x:10})); //1
+
+					/**
+					 * 화살표 함수가 Function.prototype.call, Function.prototype.apply, Function.prorotype.bind 메소드를 호출할 수 없다는 의미가 아니다.
+					 * 화살표 함수는 함수 자체의 this 바인딩을 갖지 않기 떄문에 this를 교체할 수 없고 언제나 상위 스코프의 this바인딩을 참조한다. 
+					 */
+
+					const add = (a,b)=> a+b;
+					console.log(add.call(null,1,2));//3
+					console.log(add.apply(null,[1,2])); //3
+					console.log(add.bind(null,1,2)());//3
+
+
+
+
+
+
+					//함수에 ()=>{} 쓰지 말아야 하는 이유
+					
+					const personz = {
+						name:'lee',
+						//Bad
+						sayHi: ()=>console.log(`Hi ${this.name}`),//화살표 함수 내부의 this는 사위 스코프인 전역 this가 가리키는
+											// 전역 객체를 가리키므로 결과적으로 window.name과 같다.
+						//Good
+						sayBye(){
+							console.log(`Hi ${this.name}`)
+						}
+
+					}
+					personz.sayHi();
+
+					
+
+					//혹은 클래스 필드 정의 제안을 사용하여 클래스 필드에 화살표 함수를 할당할 수도 있다. 
+					//Bad
+					class Personal{
+						//클래스 필드 정의 제안
+						constructor(){
+						name = 'Lee';
+						//Bad
+						sayHi = () => console.log(`Hi ${this.name}`);
+							//이렇게 하면 상위 스코프의 this바인딩을 참조한다. >> constructor 
+						this.sayBye = () => console.log(`Hi ${this.name}`);
+							//위와 같이 하면 sayBye는 인스턴스 프로퍼티가 된다. 
+							//constructor 내부의 this 바인과 같다. 
+						}
+					}
+
+
+
+
+
+
+
+		//super
+		//화살표 함수는 함수 자체의 super바인딩을 갖지 않는다. 따라서 화살표 함수 내부에서 super를 참조하면 this와 마찬가지로 상위 스코프의 super를 참조한다. 
+		//ex)
+		class Base1{
+			constructor(name){
+				this.name = name;
+			}
+			sayHi(){
+				return `Hi ${this.name}`
+			}
+		}
+
+		class Derived1 extends Base1{
+			//화살표 함수의 super는 상위 스코프인 constructor의 super를 가리킨다.
+			sayHi = () => `${super.sayHi()} how are you doing`;
+		}
+
+		const derived1 = new Derived1('LEE');
+		// console.log(derived1.sayHi())
+		/**
+		 * super는 내부 슬롯 [[HomeObject]]를 갖는 ES6메소드 내에서만 사용할 수 있는 키워드이다. 
+		 * sayHi 클래스 필드에 할당한 화살표 함수는 ES6메소드는 아니지만 함수 자체의 super 바인딩을 갖지 않으므로 super를 참조해도
+		 * 에러가 발생하지 않고 상위 스코프인 constructor의 super 바인딩을 참조한다. 
+		 */
+
+
+		//Arguments
+		// 화살표 함수는 함수 자체의 argument 바인딩을 갖지 않는다. 따라서 화살표 함수 내부에서 arguments를 참조하면
+		// this와 마찬가지로 상위 스코프의 arguments를 참조한다. 
+
+		(function () {
+			//화살표 함수 foo의 arguments는 상위 스코프인 즉시 실행 함수의 arguments를 가리킨다.
+			const foo = () => console.log(arguments); //[Arguments] {'0':1, '1':2}
+			foo(3,4)
+		}(1,2));
+
+		//화살표 함수 foo의 arguments는 상위 스코프인 전역 arguments를 가리킨다.
+		//하지만 전역에는 arguments 객체가 존재하지 않는다. arguments 객체는 함수 내부에서만 유효하다. 
+		const foo2 = () => console.log(arguments);
+		// foo2(1,2);         //ReferenceError
+
+
+		//Argument객체는 함수를 정의할 떄 매개변수의 개수 확정할 수 없는 가변 인자 함수를 구현할 때 유용하다.
+		//하지만 화살표 함수에서는 arguments 객체를 사용할 수 없다. 
+		//상위 스코프의 arguments객체를 참조할 수는 있지만 화살표 함수 자신에게 전달된 인수 목록을 확인할 수 없고
+		//상위 함수에게 전달된 인수 목록을 참조하므로 그다지 도움이 되지 않는다.
+
+		//따라서 화살표 함수로 가변 인자 함수를 구현해야 할 때는 반드시 Rest 파라미터를 사용해야 한다. 
+
+
+
+
+
+
+		//Rest 파라미터
+		/**
+		 * Rest 파라미터는 매개변수 앞에 '...'를 붙여서 정의한 매개변수를 의미한다.
+		 * Rest파라미터는 함수에 전달된 인수들의 목록을 배열로 전달받는다.
+		 * @param Number param1
+		 * @param Number param2
+		 * @param Object   {p1,p2,p3}
+		 * @param Number ... rest
+		 */
+
+		function restParam(param1, param2,{a,b,c}, ...rest){
+			//매개변수 rest는 인수들의 목록을 배열로 전달받는 Rest파라미트이다.
+			console.log(param1)
+			console.log(param2)
+			console.log(a)
+			console.log(b)
+			console.log(c)
+			console.log(rest);
+		}
+		let obz = {a:'a',b:'b',c:'c'}
+		restParam(1,2,obz,3,4,5,6,7,8,9,10);
+
+		//Rest 파라미터는 단 하나만 선언할 수 있다.
+		//rest 파라미터는 함수 정의 시 선언한 매개변수 개수를 나타내는 함수 객체의 length 프로퍼티에 영향을 주지 않는다. 
+
+
+		//rest 파라미터와 arguments객체
+		/**
+		 * ES6에서는 함수를 정의할 때 매개변수의 개수를 확정할 수 없는 가변 함수의 경우 매개변수를 통해 인수를 전달받는 것이 불가능하므로 arguments객체를 활용하여 인수를 전달받았다.
+		 * arguments 객체는 함수 호출 시 전달된 인수들의 정보를 담고 있는 순회 가능한 유사 배열 객체이며, 함수 내부에서 지역 변수처럼 사용할 수 있다. 
+		 * 
+		 */
+
+		//매개변수 개수를 알 수 없으면
+		function sum(){
+			//가변 인자 함수는 arguments객체를 통해 인수를 전달 받는다. 
+			console.log(arguments)
+		}
+		sum(1,2); //[Arguments] { '0': 1, '1': 2 }
