@@ -124,4 +124,61 @@ console.timeEnd("OBJECT")
 //Length 프로퍼티와 희소 배열 
 /**
  * length 프로퍼티는 요소의 개수, 즉 배열의 길이를 나타내는 0 이상의 정수를 값으로 갖는다.
+ * length프로퍼티의 값은 빈 배열일 경우 0이며, 빈 배열이 아닐 경우 가장 큰 인덱스에 1을 더한 것과 같다. 
+ * 
+ * length 프로퍼티 값은 요소의 개수, 즉 배열의 길이를 바탕으로 결정되지만 임의의 숫자 값을 명시적으로 할당할 수도 있다.
+ * 
+ * 현재 length 프로퍼티 값보다 작은 숫자 값은 할당하면 배열의 길이가 줄어든다. 
+ */
+const arrayExample = [1,2,3,4,5];
+
+//현재 length 프로퍼티 값인 5보다 작은 숫자 값 3을 length 프로퍼티에 할당
+arrayExample.length = 3;
+
+//배열의 길이가 5에서 3으로 줄어든다.
+console.log(arrayExample); //[ 1, 2, 3 ]
+
+//주의할 것은 현재 length 프로퍼티 값보다 큰 숫자를 할당하는 경우다. 
+//length값은 늘어나지만 실제 배열이 늘어나지는 않는다. 
+
+const arrayExample2 = [1];
+
+arrayExample2.length = 3;
+
+// length 프로퍼티 값은 변경되지만 실제로 배열의 길이가 늘어나지는 않는다.
+console.log(arrayExample2.length); //3
+console.log(arrayExample2); //[ 1, <2 empty items> ]
+//<2 empty items>는 배열의 요소가 아니다. >> 값이 존재하지 않는다. 뿐만 아니라 메모리 공간을 확보하지 않으며 빈 요소를 생성하지도 않는다. 
+/**
+ * 	이와 같이 배열의 요소가 연속적으로 위치하지 않고 일부가 비어있는 배열을 희소 배열이라고 한다.
+ * 자바스크립트는 희소 배열을 문법적으로 허용한다. 
+ */
+
+//희소 배열
+const sparse = [,2,,4];
+
+//희소 벼열의 length 프로퍼티 값은 요소의 개수와 일치하지 않는다.
+console.log(sparse.length); //4
+console.log(sparse);  //[ <1 empty item>, 2, <1 empty item>, 4 ]
+//인덱스가 0,2인 요소가 존재하지 않는다. 
+console.log(Object.getOwnPropertyDescriptors(sparse));
+/*
+	{
+		'1': { value: 2, writable: true, enumerable: true, configurable: true },
+		'3': { value: 4, writable: true, enumerable: true, configurable: true },
+		length: { value: 4, writable: true, enumerable: false, configurable: false }
+	}
+ */
+
+/**
+ * 일반적인 배열의 length는 배열 요소의 개수, 즉 배열의 길이와 언제나 일치한다. 
+ * 하지만 희소 배열은 length와 배열 요소의 개수가 일치하지 않는다. 희소 배열의 length는 희소 배열의 실제 요소 개수보다 언제나 크다 
+ * 
+ * 
+ * >> 자바스크립트는 문법적으로 희소 배열을 허용하지만 희소 배열은 사용하지 않는 것이 좋다. 
+ * 희소 배열은 연속적인 값의 집합이라는 배열의 기본적인 개념과 맞지 않으며, 성능에도 좋지 않다. 
+ * 최적화가 잘되어 있는 모던 자바스크립트 엔진은 요소의 타입이 일치하는 배열을 생성할 때 일반적인 의미의 배열처럼 연속된 메모리 공간을 확보하는 것으로 알려져있다.
+ * 
+ * 배열을 생성할 경우에는 희소 배열을 생성하지 않도록 주의해야한다. 
+ * 배열에는 같은 타입의 요소를 연속적으로 위치시키는 것이 최선이다. 
  */
