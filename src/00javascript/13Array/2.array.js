@@ -287,4 +287,168 @@
 		// >> Array.prototype.slice
 		/**
 		 * slice메소드는 인수로 전달된 범위의 요소들을 복사하여 배열로 반환한다. 원본 배열은 변경되지 않는다.
+		 * 
+		 * 	.splice(start, end)
+		 * 	
+		 * 	- start : 복사를 시작할 인덱스이다. 음수인 경우 배열의 끝에서 인덱스를 나타낸다. 예를 들어, slice(-2)는 배열의 마지막 두 개의 요소를 복사하여 배열로 반환한다.
+		 * 	
+		 * 	- end : 복사를 종료할 인덱스이다. 이 인덱스에 해당하는 요소는 복사되지 않는다. end는 생략 가능하며 생략 시 기본 값은 length프로퍼티 값이다.
 		 */
+		const arrTest9 = [1,2,3];
+
+		console.log(arrTest9.slice(0,1));
+		console.log(arrTest9.slice(1,2));
+
+		console.log(arrTest9);
+		//원본은 변경되지 않는다. 배열을 복사해서 반환한다. 
+
+		//인수를 모두 생략하면 원보 ㄴ배열의 복사본을 생성해서 반환한다.
+		let tmp = arrTest9.slice()
+		//이 때 생성된 복사본은 얕은 복사를 통해서 생성된다.
+
+		const todos = [
+			{id:1, content:'HTML', completed:false},
+			{id:2, content:'CSS', completed:true},
+			{id:3, content:'JavaScript', completed:false},
+		]
+
+		const _todos = todos.slice();
+		console.log(_todos===todos); //false
+		//참조값이 다른 별개의 객체이다.
+		console.log(_todos[0]===todos[0]);//true
+		//배열 요소의 참조 값이 같다. 즉, 얕은 복사되었다.\
+		/**
+		 * 
+		 * deepClone은 Lodash라이브러리의 cloneDeep 메소드를 사용하는 것이 편하다.
+		 */
+		// slice 메소드가 복사본을 생성하는 것을 이용하여 arguments, HTMLCollection, NodeList 같은 유사 배열 객체를 배열로 변환할 수 있다.
+
+		function sum(){
+			//유사 배열 객체를 배열로 반환(ES5)
+			var arr = Array.prototype.slice.call(arguments);
+			console.log(arr);
+
+			return arr.reduce(function(pre,cur){
+				return pre+cur;
+			},0)
+		}
+		console.log(sum(1,2,3)); //6
+		
+		//Array.from 메소드르 사용하면 더욱 간단하게 유사 배열 객체를 배열로 변환할 수 있다.
+		//Array.from  메소드는 유사 배열 객체 또는 이터러블 객체를 배열로 변환한다.
+
+		function sum2(){
+			const arr = Array.from(arguments);
+			console.log(arr);
+			return arr.reduce((pre,cur)=>pre+cur, 0);
+		}
+
+		//스프레드 문법으로 배열 변환
+
+		function sum3(){
+			//이터러블을 배열로 변환 (ES6스프레드 문법)
+			const arr = [...arguments];
+			console.log(arr);//[1,2,3]
+			return arr.reduce((pre,cur)=> pre+cur,0)
+		}
+		console.log(sum(1,2,3,4,5));//15
+
+
+
+
+
+		// >> Array.prototype.join
+		/**
+		 * join 메소드는 원본 배열의 모든 요소를 문자열로 변환 후, 인수로 전달받은 문자열, 즉 구분자로 연결한 문자열을 반환한다.
+		 * 구분자는 생략 가능하며 기본 구분자는 (',')이다.
+		 * 기본 구분자는 콤마이다.
+		 */
+
+		const arrJoin = [1,2,5,2,3,1,4,12,2,3,3,4,12,4];
+		console.log(arrJoin.join())
+		console.log(arrJoin.join(''))
+		console.log(arrJoin.join(':'))
+
+
+
+
+		// >> Array.prototype.reverse
+		/**
+		 * reverse 메소드는 원본 배열의 순서를 반대로 뒤집는다. 이떄 원본 배열이 변경된다. 반환 값은 변경된 배열이다.
+		 */
+		
+		const arrReverse = [1,2,3,4,5,1,2,3];
+		console.log(arrReverse.reverse());
+
+
+		// >> Array.prototype.fill
+		/**
+		 * ES6에서 도입된 fill메소드는 인수로 전달 받은 값을 배열의 처음부터 끝가지 요소로 채운다. 이떄 원본 배열이 변경된다. 
+		 */
+		let arrFill = [1,2,3,4];
+		//인수로 전달 받은 값 0 을 배열의 처음부터 끝까지 요소로 채운다.
+
+		arrFill.fill(0);
+		console.log(arrFill);
+
+		//두 번쨰 요소로 채우기 시작할 인덱스를 전달할 수 있다.
+		arrFill = [1,2,3,4];
+		arrFill.fill(0,1);
+		//fill 메소드는 원본 배열을 직접 변경한다.
+		console.log(arrFill); //[1,0,0,0]
+
+
+		//세 번쨰 인수로 요소 채우기를 멈출 인덱스를 전달할 수 있다.
+		arrFill = [1,2,3,4,5];
+		arrFill.fill(0,1,4);
+		console.log(arrFill)
+		/**
+		 * fill 메소드로 요소를 채울 경우 모든 요소를 하나의 값만으로 채울 수 밖에 없다는 단점이 있다. 하지만 Array.from메소드를 사용하면
+		 * 두 번째 인수로 전달한 콜백 함수를 통해 요소 값을 만들면서 배열을 채울 수 있다.
+		 * Array.from 메소드는 두번 쨰 인수로 전달한 콜백 함수에 첫 번째 인수에 의해 생성된 배열의 요소 값과 인덱스를 순차적으로 전달하면서
+		 * 호출하고, 콜백 함수의 반환값으로 구성된 배열을 반환한다. 
+		 */
+		//인수로 전달받은 정수만큼 요소를 생성하고 0부터 1씩 증가하면서 요소를 채운다.
+		const sequnces = (length = 0 ) => Array.from({length}, (_, i)=>i);
+		// const sequnces = (length = 0 ) => Array.from(new Array(length), (_, i)=>i);
+		console.log(sequnces(3))
+
+
+		// >> Array.prototype.includes
+		/**
+		 * ES7에 도입된 includes 메소드는 배열 내에 특정 요소가 포함되어 있는지 확인하여 true 또는 false를 반환한다. 
+		 * 첫 번째 인수로 검색할 대상을 지정한다.
+		 */
+
+		const arrTest10 = [1,2,3,5,3,2,5,6,2,3,1,2,3,4,2,34,4,23374,734,2,3,5,2,6,7,67,867,86,534,5,4,4234,345,345345];
+		arrTest10.includes(2); //true
+		arrTest10.includes(0); //false
+
+		/**
+		 * 두 번째 인수로 검색을 시작할 인덱스를 전달할 수 있다. 두 번째 인수를 생략할 경우 기본값으로 0을 설정한다.
+		 * 만약 두 번째 인수에 음수를 전달하면 length 프로퍼티 값과 음수 인덱스를 합산하여(length+index) 검색 시작 인덱스를 설정한다.
+		 */
+
+		arrTest10.includes(2, 3);
+		arrTest10.includes(4,-1); //(arrTest10.length - 1) 부터 시작한다.
+
+		/** 
+		 * 배열에서 인수로 전달된 요소를 검색하여 인덱스를 반환하는 indexOf 메소드를 사용하여 배열 내의 특정 요소가 포함 되어있는지 확인할 수 있다.
+		 * 하지만 indexOf 메소드를 사용하면 반환 값이 -1인지 확인해 보아야하고 NaN이 포함되어 있는지 확인할 수 없다는 문제가 있다.
+		 */
+
+		console.log([NaN].indexOf(NaN))
+		console.log([NaN].includes(NaN))
+
+
+
+		// >> Array.prototype.flat
+		/**
+		 * ES10에서 도입된 flat은 인수로 전달한 깊이 만큼 재귀적으로 배열을 평탄화 한다 (??)
+		 * [1,[2,3,4,5],6].flat(); //[1,2,3,4,5,6]
+		 * 
+		 * 중첩 배열을 평탄화할 깊이를 인수로 전달할 수 있다. 인수를 생략하면 기본 값은 1이다. 인수로 Infinity를 전달하면 중첩 배열을 모두 평탄화한다.
+		 * 
+		 */
+
+		
