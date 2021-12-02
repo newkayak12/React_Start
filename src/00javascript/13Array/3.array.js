@@ -117,5 +117,62 @@ num.forEach(item => pow.push(item**2));
 console.log(pow); //[ 1, 4, 9, 16, 25 ]
 
 num.forEach((item, index, arr)=>{
+	//v, i, arr
 	console.log(`요소값 : ${item}, 인덱스 : ${index}, this: ${JSON.stringify(arr)}`);
 })
+// forEach 메소드의 반환값은 언제나 undefined이다.
+//forEach 메소드의 두 번쨰 인수로 forEach 메소드의 콜백 함수 내부에서 this로 사용할 객체를 전달할 수 있다.
+
+class Numbers {
+	numberArray = [];
+	multiply (arr) {
+		arr.forEach(function (item){
+			//TypeError
+			this.numberArray.push(item*item);
+			
+			//forEach  메소드의 콜백 함수는 일반 함수로 호출되므로 콜백 함수 내부의 this는  undefined를 가리킨다.
+			//this가 전역 객체가 아닌 undefined를 가리키는 이유는 클래스 내부의 모든 코드에 암묵적으로 strict mode가 적용된다
+			// forEach 메소드의 콜백 함수 내부의 this와 multiply 메소드 내부의 this를 일치시키려면 forEach 메소드의 두 번째 인수로 forEach 메소드의 콜백 함수 내부에서 this로 사용할 객체를 전달한다.
+		}, this); //forEach 메소드의 콜백 함수 내부에서 this로 사용할 객체를 전달
+	}
+
+	pow(arr){
+		arr.forEach((item)=>{
+			this.numberArray.push(item**2);
+			//화살표 함수 내부에서 this를 참조하면 상위 스코프의 this를 그대로 참조한다.
+		})
+	}
+}
+
+const numbers = new Numbers();
+console.log(numbers.multiply([1,2,3]))
+console.log(numbers.pow([1,2,3]))
+
+// 더 나은 방법은 ES6의 화살표 함수를 이용하는 것이다. 화살표 함수는 this바인딩을 갖지 않는다. 따라서 화살표 함수 내부에서 this를 참조하면 상위 스코프, multiply 메소드 내부의 this를 그대로 참조한다.
+
+
+
+//forEach 메소드의 동작을 이해하기 위해서  forEach 메소드의 폴리필을 살펴볼 필요가 있다.
+// 만약 Array.prototype에 forEach 메소드가 존재하지 않으면 메소드의 폴리필을 추가한다.
+if(!Array.prototype.forEach){
+	Array.prototype.forEach = function(callback, thisArg){
+		//첫 번째 인수가 함수가 아닌면 typeError를 발생시킨다.
+		if(typeof callback !=='function'){
+			throw new TypeError(callback + ' is not a function');
+		}
+
+		//this로 사용할 두 번째 인수를 전달 받지 못하면 전역 객체를 this로 사용한다.
+		thisArg = thisArg||window;
+
+		//for 문으로 배열을 순회하면서 콜백함수를 호출한다.
+		for(var i = 0; i< this.length; i++){
+			//call 메소드를 통해 thisArg를 전달하면서 콜백 함수를 호출한다.
+			//이때 콜백 함수의 인수로 배열 요소, 인덱스, 배열 자신을 전달한다
+			callback.call(thisArg, this[i], i, this);
+		}
+	}
+}
+/**
+ * 이처럼 forEach메소드도 내부에서는 for를 쓰지만 for을 내부로 은닉하여 로직의 흐름을 이해하기 쉽게하고 복잡성을 해결한다.
+ * forEach는 for와 달리 break;, continue;를 사용할 수 없다. 즉, 배열의 모든 요소를 모두 순회하며 중간에 순회를 중단할 수 없다. 
+ */
