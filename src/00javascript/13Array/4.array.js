@@ -107,10 +107,14 @@ const flatMapTest = ['hello', 'javascript'];
 console.log(flatMapTest.map(x => x.split('')).flat())
 
 console.log(flatMapTest.flatMap(x => x.split('')));
+/*
+[ 'h', 'e', 'l', 'l', 'o', 'j', 'a', 'v', 'a', 's', 'c', 'r', 'i', 'p', 't' ]
+*/
 
 
 // 단, flatMap은 flat처럼 인수를 전달하여 평탄화 깊이를 지정할 수는 없고 1단계만 평단화한다.
 // map메소드를 통해 생성된 중첩 배열의 평탄화 깊이를 지정해야하면 flatMap말고 flat과 map을 각각 호출한다.
 
-console.log(flatMapTest.flatMap((str,index) => [index, [str, str.length]]));
-console.log(flatMapTest.map((str,index)=>[index, [str,str.length]]).flat(2));
+console.log(flatMapTest.flatMap((str,index) => [index, [str, str.length]])); //[ 0, [ 'hello', 5 ], 1, [ 'javascript', 10 ] ]
+console.log(flatMapTest.map((str,index)=>[index, [str,str.length]]).flat(2)); //[ 0, 'hello', 5, 1, 'javascript', 10 ]
+
