@@ -69,3 +69,187 @@ console.log(new Date(2021,11, 26, 00,00,00,0)); //2021-12-25T15:00:00.000Z
 console.log(Date.now()); //1638799072453
 
 //Date.parse
+/**
+ * 1970년 1월 1일 00:00:00을 기점으로 인수로 전달된 지정 시간의 인수와 동일한 형식까지 밀리초를 숫자로 반환한다.
+ */
+console.log(Date.parse('Jan 2, 1970 00:00:00 UTC')) //1638873657996
+
+//Date.UTC
+/**
+ * 19070년 1월 1일 00:00:00을 기점으로 인수로 전달된 지정 시간까지 밀리초를 숫자로 반환한다.
+ * UTC메소드는 new Date(year,month[, day, hour, minute, second, millisecond])와 같은 형식의 인수를 사용해야한다.
+ * Date.UTC메소드의 인수는 로컬 타임(KST)이 아닌 UTC로 인식된다.
+ */
+console.log(Date.UTC(1970,0,2));
+
+
+//Date.prototype.getFullYear
+//Date 객체 연도를 나타내는 정수를 반환한다.
+console.log(new Date('2020/07/24').getFullYear)
+
+//Date.prototype.setFullYear
+let today = new Date();
+
+//년도 지정
+today.setFullYear(2000);
+console.log(today.getFullYear());
+
+// 년/월/일 지정
+today.setFullYear(1900, 0, 1);
+console.log(today.getFullYear());
+
+//Date.prototype.getMonth
+console.log(new Date('2020/07/24').getMonth())//6
+
+//Date.prototype.setMonth
+//월 지정
+today.setMonth(0); //1월
+console.log(today.getMonth()); //1월
+
+today.setMonth(11,1);
+console.log(today.getMonth())
+
+//Date.prototype.getDay
+//요일을 나타내는 정수를 반환하다.
+/**
+ * 일요일 : 0
+ * 월요일 : 1
+ * 화요일 : 2
+ * 수요일 : 3
+ * 목요일 : 4
+ * 금요일 : 5
+ * 토요일 : 6
+ */
+console.log(new Date('2020/07/24').getDay()); //5
+
+
+//Date.prototype.getHours
+console.log(new Date('2020/07/24 12:00').getHours())
+
+//Date.prototype.setHours
+//시간 지정
+today.setHours(8);
+console.log(today.getHours());
+//시간/분/초/밀리초
+today.setHours(0,0,0,0);
+console.log(today.getHours())
+
+
+//Date.prototype.getMinutes
+console.log(new Date().getMinutes())
+
+//Date.prototype.setMinutes
+//분(0~59)을 나타내는 정수를 설정한다. 분 이외의 옵션으로 초, 밀리초도 설정할 수 있다.
+
+//분 지정
+today.setMinutes(50);
+console.log(today.getMinutes())
+
+
+today.setMinutes(5,10,999)// HH:05:10:999
+console.log(today.getMinutes())
+
+
+//Date.prototype.getSeconds
+console.log(new Date().getSeconds())
+
+//Date.prototype.setSeconds
+today.setSeconds(30);
+console.log(today.getSeconds());
+
+//초/ 밀리초 지정
+today.setSeconds(10,0);//HH:MM:10:000
+console.log(today.getSeconds)
+
+
+//Date.prototype.getMilliseconds
+console.log(new Date('2020/07/24/12:30:10:150').getMilliseconds())
+
+//Date.prototype.setMilliseconds
+today.setMilliseconds(123);
+console.log(today.getMilliseconds())
+
+
+//Date.prototype.getTime
+//1970년 1월 1일 00:00:00을 기준으로 Date객체의 시간까지 경과된 밀리초를 반환
+console.log(new Date().getTime());
+
+//Date.prototype.setTime
+today = new Date();
+today.setTime(864000000);
+console.log(today)
+
+//Date.prototype.getTimeZoneOffset
+today = new Date();
+
+console.log(today.getTimezoneOffset()/60);
+
+
+//Date.prototype.toDateString
+today = new Date();
+console.log(today.toString());
+console.log(today.toDateString())
+
+//Date.prototype.toTimeString
+today = new Date();
+console.log(today.toString())
+console.log(today.toTimeString());
+
+
+//Date.prototype.toISOString
+//ISO 8601형식으로 반환
+
+console.log(today.toISOString())
+console.log(today.toISOString().slice(0,10))
+console.log(today.toISOString().slice(0,10).replace(/-/g, ''))
+
+
+//Date.prototype.toLocaleString
+//인수로 전달한 로케일을 기준으로 Date객체의 날짜와 시간을 표현한 문자열을 반환한다. 
+//인수가 생략되면 브라우저를 참조한다.
+console.log(`kr : ${today.toLocaleString('ko-KR')}`)
+console.log(`us : ${today.toLocaleString('en-US')}`)
+console.log(`jp : ${today.toLocaleString('ja-JP')}`)
+
+
+
+//Date.prototype.toLocaleTimeString
+//로케일을 기준으로 시간을 반환
+console.log(`kr : ${today.toLocaleTimeString('ko-KR')}`)
+console.log(`us : ${today.toLocaleTimeString('en-US')}`)
+console.log(`jp : ${today.toLocaleTimeString('ja-JP')}`)
+
+
+function printNow() {
+	const today = new Date();
+	const dayNames = [
+		'(일요일)',
+		'(월요일)',
+		'(화요일)',
+		'(수요일)',
+		'(목요일)',
+		'(금요일)',
+		'(토요일)',
+	]
+
+	const day = dayNames[today.getDay()];
+	const year = today.getFullYear();
+	const month = today.getMonth()+1;
+	const date = today.getDate();
+	let hour = today.getHours();
+	let minute = today.getMinutes();
+	let second = today.getSeconds();
+	const ampm = hour >= 12? 'PM' : 'AM';
+
+	hour %= 12;
+	hour = hour || 12;
+
+	minute = minute <10 ? '0'+minute : minute
+	second = second <10 ? '0'+second : second
+
+	const now = `${year}년 ${month}월 ${date}일 ${day}  ${hour}:${minute}:${second} ${ampm}`
+	console.log(now);
+
+	setTimeout(printNow,1000)
+}
+printNow();
