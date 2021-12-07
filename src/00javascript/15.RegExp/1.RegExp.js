@@ -40,3 +40,17 @@ console.log(regExp.test(tel))
 
   regexp = new RegExp(/is/i); //ES6
   console.log(regexp.test(target));
+
+
+  //RegExp 메소드
+  /**
+   * 정규 표현식을 사용하는 메소드는
+   * RegExp.prototype.exec,
+   * RegExp.prototype.test
+   * String.prototype.match
+   * String.prototype.replace
+   * String.prototype.search
+   * String.prototype.split 등이 있다.
+   */
+
+  
