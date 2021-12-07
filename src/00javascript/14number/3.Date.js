@@ -219,7 +219,7 @@ console.log(`kr : ${today.toLocaleTimeString('ko-KR')}`)
 console.log(`us : ${today.toLocaleTimeString('en-US')}`)
 console.log(`jp : ${today.toLocaleTimeString('ja-JP')}`)
 
-
+// (
 function printNow() {
 	const today = new Date();
 	const dayNames = [
@@ -252,4 +252,5 @@ function printNow() {
 
 	setTimeout(printNow,1000)
 }
+// ())
 printNow();
