@@ -257,7 +257,34 @@ console.log(regexp.test(targets))  //true
 
 
 //숫자로만 이루어진 문자열인지 검사
-target = '12345'
+targets = '12345'
 //숫자로만 이루어진 문자열인지 검사한다.
 regexp = /^\d+$/
 console.log(regexp.test(targets))
+
+//하나 이상의 공백으로 시작하는지 검사
+// \s는 여러 가지 공백 문자(스페이스, 탭 등)을 의미한다. \s는 [\t\r\n\v\f]와 같은 의미이다.
+targets = ' Hi!';
+console.log(/^[\s]+/.test(targets))
+
+
+
+//*********************************************실제 예시
+//아이디로 사용 가능한지 검사
+targets = 'abc123'
+regexp=/^[A-Za-z0-9]{4,10}$/
+console.log(regexp.test(targets))
+//이메일
+targets = 'abc123@abc.com'
+regexp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+console.log(regexp.test(targets))
+//휴대폰 번호
+targets = '010-1234-1234'
+regexp = /^\d{3}-\d{3,4}-\d{4}$/
+console.log(regexp.test(targets))
+//특수 문자 포함 여부 검사
+targets = 'abc#123'
+regexp=(/[^A-Za-z0-9]/gi)
+console.log(regexp.test(targets))
+//특수문자 제거
+console.log(targets.replace(regexp, ''));
