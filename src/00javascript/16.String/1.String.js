@@ -141,4 +141,95 @@ console.log(str.endsWith('ld'))
 //x로 끝나는지 검사
 console.log(str.endsWith('x'))
 //처음부터 5자리가 lo로 끝나는지 검사
-console.log(str.startsWith('lo',5))
+console.log(str.endsWith('lo',5))
+
+
+// String.prototype.charAt
+// charAt메소드는 대상 문자열에서 인수로 전달받은 인덱스에 위치한 문자를 검색하여 반환한다.
+str = 'String.prototype.charAt'
+for(let i = 0; i<str.length; i++){
+  console.log(str.charAt(i));
+}
+
+
+//String.prototype.substring
+//substring 메소드는 댓강 문자열에서 첫 번째 인수로 전달받은 인덱스에 위치하는 문자부터 두 번째 인수로 전달받은 인덱스에 위치하는 문자의 바로 이전 문자까지 부분 문자열을 반환한다.
+str = 'Hello World'
+console.log(str.substring(1,4))
+/**
+ * substring 메소드의 첫 번째 인수는 두 번째 인수보다 작은 정수여야 정상이다. 하지만 다음과 같이 인수를 전달해도 정상 동작한다.
+ * 1. 첫번째 인수 > 두 번째 인수인 경우 두 인수는 교환된다.
+ * 2. 인수 < 0 또는 NaN이면 0으로 취급
+ * 3. 인수 > 문자열 길이인 경우 인수는 문자열 길이로 취급된다.
+ */
+
+ // 1. 첫번째 인수 > 두 번째 인수인 경우 두 인수는 교환된다.
+ console.log(str.substring(4,1))
+ // 2. 인수 < 0 또는 NaN이면 0으로 취급
+ console.log(str.substring(-2))
+ // 3. 인수 > 문자열 길이인 경우 인수는 문자열 길이로 취급된다.
+ console.log(str.substring(1, Infinity))
+ console.log(str.substring(20))
+
+ //String.prototype.indexOf와 함께 사용하면 활용도가 높아진다.
+ console.log(str.substring(0,str.indexOf(' ')))
+ console.log(str.substring(str.indexOf(' '),str.length))
+
+
+
+ //String.prototype.slice
+ /**
+  * slice 메소드는 substric 메소드와 동일하게 동작한다. 단, slice는 음수인 인수를 전달할 수 있다. 이렇게 하면 뒤에서부터 시작한다.
+  */
+ console.log(str.slice(0,5))
+ console.log(str.substring(0,5))
+
+ console.log(str.slice(2))
+ console.log(str.substring(2))
+
+ console.log(str.slice(-5)) //0으로 취급
+ console.log(str.substring(-5))
+
+
+ //String.prototype.toUpperCase , String.prototype.toLowerCase
+ console.log(str.toUpperCase())
+ console.log(str.toLowerCase())
+
+
+
+ //String.prototype.trim 
+ //앞,뒤 공백을 제거한 문자열을 반환한다.
+str = '                    looo          '
+console.log(str.trimStart())
+console.log(str.trimEnd())
+console.log(str.trim())
+
+//정규 표현식으로 비슷하게 할 수 있다.
+console.log(str.replace(/\s/g,'').replace(/^\s+/g,'').replace(/\s+$/g,''))
+
+
+//String.prototype.repeat
+/**
+ * ES6에 도입된  repeat 메소드는 대상 문자열을 인수로 전달받은 정수만큼 반복해 연결한 새로운 문자열을 반환한다.
+ * 인수가 0이면 빈 문자열, 음수면 RangeError를 반환한다.
+ */
+str = 'abc'
+console.log(str.repeat())
+console.log(str.repeat(1))
+console.log(str.repeat(2))
+console.log(str.repeat(2.5))
+// console.log(str.repeat(-1)) //RangeError
+
+
+//String.prototype.replace
+//replace는 첫 번째 인수로 전달받은 문자열 또는 정규표현식을 검색하여 두 번쨰 인수로 전달한 문자열로 치환한 문자열을 반환한다
+str = "Hello World!"
+console.log(str.replace('World','Lee'))
+//검색된 문자열이 여럿 존재하면 첫 번째 검색된 것을 바꾼다.
+
+//추가적으로 $&와 같은 특수 교체 패턴을 사용할 수 있다. $&은 검색된 문자열을 의미한다.
+console.log(str.replace('world','<strong>$&</strong>'))
+
+//정규표현식으로 전역으로 검색할 수도 있다.
+str = 'Hello Hello';
+console.log(str.replace(/hello/gi,'Hi!'))
