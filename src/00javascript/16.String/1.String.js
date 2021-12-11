@@ -224,12 +224,40 @@ console.log(str.repeat(2.5))
 //String.prototype.replace
 //replace는 첫 번째 인수로 전달받은 문자열 또는 정규표현식을 검색하여 두 번쨰 인수로 전달한 문자열로 치환한 문자열을 반환한다
 str = "Hello World!"
-console.log(str.replace('World','Lee'))
+console.log(str.replace('World','Lee'));
 //검색된 문자열이 여럿 존재하면 첫 번째 검색된 것을 바꾼다.
 
 //추가적으로 $&와 같은 특수 교체 패턴을 사용할 수 있다. $&은 검색된 문자열을 의미한다.
-console.log(str.replace('world','<strong>$&</strong>'))
+console.log(str.replace('world','<strong>$&</strong>'));
 
 //정규표현식으로 전역으로 검색할 수도 있다.
 str = 'Hello Hello';
-console.log(str.replace(/hello/gi,'Hi!'))
+console.log(str.replace(/hello/gi,'Hi!'));
+
+//카멜 케이스를 스네이크 케이스로 변환하는 함수
+function camelToSnake(camelCase){
+  //  /.[A-Z]/g는 임의의 한 문자와 대문자로 이루어진 문자열에 매치한다.
+  //  치환 함수의 인수로 매치 결과가 전달되고, 치환 함수가 반환한 결과와 매치 결과를 치환한다.
+  return camelCase.replace(/.[A-Z]/g, match=>{
+    console.log(match);
+    return match[0] + '_' +match[1].toLowerCase()
+  })
+}
+
+const camelCase = 'helloWorld';
+console.log( camelToSnake(camelCase) ); //hello_world
+
+
+
+
+//스네이크 케이스 카멜 케이스로 변환하는 함수
+function snakeToCamel(snakeCase){
+  // /_[a-z]/g는 _와 소문자로 이루어진 문자열에 매치한다.
+  // 치환 함수의 인수로 매치 결과가 전달되고, 치환 함수가 반환한 결과와 매치 결과를 치환한다.
+  return snakeCase.replace(/_[a-z]/g, match=> {
+    console.log(match)
+    return match[1].toUpperCase();
+  })
+}
+const snakeCase = 'hello_world';
+console.log(snakeToCamel(snakeCase))//helloWorld
