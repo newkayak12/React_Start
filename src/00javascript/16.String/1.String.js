@@ -261,3 +261,25 @@ function snakeToCamel(snakeCase){
 }
 const snakeCase = 'hello_world';
 console.log(snakeToCamel(snakeCase))//helloWorld
+
+
+
+// String.protype.split
+// split 메서드 대상 문자열에서 첫 번째 인수로 전달한 문자열 또는 정규 표현식을 검색하여 문자여을 구분한 후 분리된 각 문자열로 이루어진 배열을 반환한다.
+//인수로 빈 문자열을 전달하면 각 문자를 모두 분리하고 인수를 생략하면 대상 문자열 전체를 단일 요소로 하는 배열을 반환한다.
+str = 'How are you doing?'
+//' '으로 분리
+console.log(str.split(' '))
+//\s 정규표현 식으로 스페이스, 탭으로 끊기
+console.log(str.split(/\s/))
+// 빈문자열로 문자별 끊기
+console.log(str.split(''))
+// 생략해서 전체 반환
+console.log(str.split())
+
+//split 메소드는 배열을 반환한다. 따라서 Array.prototype.reverse, Array.prototype.join과 함꼐 사용하면 문자열을 뒤집을 수 있다.
+function reverseString(str){
+  return str.split('').reverse().join('');
+}
+
+console.log(reverseString(str))
