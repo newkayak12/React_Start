@@ -231,3 +231,41 @@ console.log({...obj});
 	 */
 
 	
+
+	//사용자 정의 이터러블
+	//이터레이션 프로토콜을 준수하지 않는 일반 객체도 이터레이션 프로토콜을 준수하도록 구현하면 사용자 정의 이터러블이 된다.
+	//피보나치 수열을 구현한 사용자 정의 이터러블
+	let fibonacci = {
+		//Symbol.iterator메소들르 구현하여 이터러블 프로토콜을 준수한다.
+		[Symbol.iterator](){
+			let [pre, cur] = [0,1];
+			const max = 10; //수열의 최대값
+
+			//Symbol.iterator 메소드는 next 메소들르 소유한 이터레이터를 반환해야하고
+			//next 메소드는 이터레이터 리절트 객체를 반환해야한다.
+			return {
+				next(){
+					[pre,cur] = [cur, pre+cur];
+					//이터레이터 리절트 객체를 반환한다.
+					return {value:cur, done:cur>=max};
+				}
+			}
+		}
+	}
+	for(const num of fibonacci){
+		console.log(num) // 1, 2, 3, 5, 8
+	}
+	/**
+	 * 사용자 정의 이터러블은 이터레이션 프로토콜을 준수하도록 Symbol.iterator 메솓르르 구현하고 Symbol.iterator 메소드가 next 메소드를 갖는 이터레이터를 바노한하도록 한다.
+	 * 그리고 이터레이터의 next메소드는 done과 value 프로퍼티를 가지는 이터레이터 리절트 객체를 반환하다. for...of 문은 doen프로퍼티가 true가 될 때까지 반복하며 done프로퍼티가 true가 되면 반복을 중지한다.
+	 * 이터러블은 for...of문뿐만 아니라 스프레드 문법, 배열 디스트럭처링 할당에도 사용할 수 있다.
+	 */
+	//이터러블은 스프레드 문법의 대상이 될 수 있다.
+	arr = [...fibonacci]; //[ 1, 2, 3, 5, 8 ]
+	console.log(arr);
+	//이터러블은 배열 디스트럭처링 할당의 대상이 될 수 있다.
+	const [first, second, ...rests] = fibonacci; //1 2 [ 3, 5, 8 ]
+	console.log(first, second, rests)
+
+
+	
