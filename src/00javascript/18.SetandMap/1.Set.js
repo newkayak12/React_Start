@@ -322,3 +322,110 @@
 
       //합집합
       //합집합은 A와 B의 중복 없는 모든 요소로 구성된다. 
+
+         Set.prototype.union = function (set){
+            //this(set객체를 복사)
+            const result = new Set(this)
+            for(const value of set){
+               //합집합은  2개의 Set 객체의 모든 요소로 구성된 집합이다. 중복된 요소는 포함되지 않는다. 
+               result.add(value)
+            }
+            return result;
+         }
+
+         setA = new Set([1,2,3,4]);
+         setB = new Set([2,4]);
+
+         //setA와  setB의 합집합
+         console.log(setA.union(setB))
+         //setB와  setA의 합집합
+         console.log(setB.union(setA))
+         
+         
+         //또는 아래와 같이 할 수 있다. 
+
+
+         Set.prototype.union = function (set){
+            return new Set([...this, ...set])
+         };
+
+         setA = new Set([1,2,3,4]);
+         setB = new Set([2,4]);
+
+         //setA와  setB의 합집합
+         console.log(setA.union(setB))
+         //setB와  setA의 합집합
+         console.log(setB.union(setA))
+         
+
+
+      // 차집합
+      // 차집합 A-B는 A에는 존재하지만 집합 B에서는 존재하지 않는 요소로 구성된다. 
+         Set.prototype.difference = function (set){
+            //this(set 객체)를 복사
+            const result = new Set(this);
+            
+            for(const value of set){
+               //차집합은 어느 한쪽 집합에는 존재하지만 다른 한쪽 집합에느 ㄴ존재하지 않는 요소로 구성된 집합니다. 
+               result.delete(value);
+            }
+            return result;
+         }
+         setA = new Set([1,2,3,4]);
+         setB = new Set([2,4]);
+
+         //setA와  setB의 합집합
+         console.log(setA.difference(setB))
+         //setB와  setA의 합집합
+         console.log(setB.difference(setA))
+
+         //아래와 같이도 할 수 있다.
+
+         Set.prototype.difference = function (set){
+            return new Set([...this].filter(v=>!set.has(v)));
+         }
+         setA = new Set([1,2,3,4]);
+         setB = new Set([2,4]);
+
+         //setA와  setB의 합집합
+         console.log(setA.difference(setB))
+         //setB와  setA의 합집합
+         console.log(setB.difference(setA))
+
+
+
+      //부분 집합과 상위 집합
+      // 집합 A가 집합 B에 포함되는 경우, 집합 A는 집합 B의 부분 집합이며, 집합 B는 집합 A의 상위 집합이다. 
+         
+      
+         //this가 subSet의 상위 집합인지 확인한다.
+         Set.prototype.isSuperset = function (subset){
+            for(const value of subset){
+               //superset의 모든 요소가 subset의 모든 요소를 포함하는지 확인
+               if(!this.has(value)){
+                  return false
+               }
+            }
+
+            return true
+         }
+
+         setA = new Set([1,2,3,4]);
+         setB = new Set([2,4]);
+         //setA와  setB의 합집합
+         console.log(setA.isSuperset(setB)) //true
+         //setB와  setA의 합집합
+         console.log(setB.isSuperset(setA)) //false
+
+
+         //혹은
+
+
+         Set.prototype.isSuperset = function (subset){
+            const supersetArr = [...this];
+            return [...subset].every(v=>supersetArr.includes(v));
+         }
+         //setA와  setB의 합집합
+         console.log(setA.isSuperset(setB)) //true
+         //setB와  setA의 합집합
+         console.log(setB.isSuperset(setA)) //false
