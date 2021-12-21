@@ -498,3 +498,45 @@ console.log(f1,f2,f3)
 						path: 'ko/docs/Web/Javascript'
 					}
 				  */
+
+
+				
+				// 객체 디스트럭처링 할당
+				//ES5에서 객체의 각 프로퍼티를 객체로부터 디스트럭처링하여 변수에 할당하기 위해서는 프로퍼티 키를 사용해야 한다. 
+
+				var user = {firstName: 'Ungmo', lastName: 'lee'};
+				var firstName = user.firstName;
+				var lastName = user.lastName;
+
+				/**
+				 *  ES6의 객체 디스트럭처링 할당은 객체의 각 프로퍼티를 객체로부터 추출하여 1개 이상의 변수에 할당한다.
+				 * 이떄 객체 디스트럭처링 할당의 대상(할당문의 우변)은 객체이어야 하며, 할당 기준은 프로퍼티 키다. 즉, 순서는 의미가 없으며, 선언된 변수 이름과 프로퍼티 키가 일치하면 할당한다.
+				 */
+
+				let user1 = {firstName : "YJ", lastName : "kim"};
+				let {lastName, firstName} = user2;
+				console.log(firstName, lastName);
+
+
+				/**
+				 * 배열 디스트럭처링 할당과 마찬가지로 객체 디스트럭처링 할당을 위해서는 할당 연산자 왼쪽에 프로퍼티 값을 할당 받을 변수를 선언해야한다.
+				 * 
+				 * 이때 변수를 객체 리터럴 형태로 선언한다.
+				 */
+
+				let {lastName, firstName} = {firstName:"yj", lastName:"kim"};
+
+				//이때 우변에 객체 또는 객체로 평가될 수 있는 표현식(문자열 , 숫자, 배열 등)을 할당하지 않으면 에러가 발생한다.
+
+				// let {lastName, firstName};
+				// SyntaxError: Missing initializer in destructuring declaration
+
+				// let {lastName, firstName} = null;
+				// TypeError : Cannot destructure property 'lastName' of 'null' as it is null
+				// 위 예제에서 객체 리터럴 형태로 선언한 변수는 lastName, firstName이다. 이는 프로퍼티 축약 표현을 통해 선언한 것이다.
+				
+
+				let { lastName, firstName } = user3;
+				let {lastName:lastName, firstName:firstName} = user4;
+				//위의 두 개는 동치이다. 
+				
