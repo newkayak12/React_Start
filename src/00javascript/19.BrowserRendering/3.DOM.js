@@ -179,4 +179,112 @@
      *          : HTMLCollection(3) [li,li,li]
      * 
      * ** 만약 인수로 전달된 태그 이름을 갖는 요소가 존재하지 않을 경우 getEleementByTagName 메소드는 빈 HTMLCollection 객체를 반환한다.
+     * 
+     * 
+     * 
+     * 
+     *      3.class를 이용한 요소 노드 취득
+     * 
+     *          :Document.prototype/Element.prototype.getElementsByClassName 메소드는 인수로 전달한 class어트리뷰트 값을 갖는 모든 요소 노드들을 탐색하여 반환한다.
+     * 인수로 전달할 class값은 공백으로 구분하여 여러 개의 class를 지정할 수 있다. getElementByTagName 메소드와 마찬가지로 getElementsByClassName 메소드는 여러 개의 요소 노드 객체를 갖는 DOM 컬렉션 객체인 HTMLCollection 객체를 반환한다.
+     * 
+     *  getElementsByTagName 메소드와 마찬가지로 getElementsByClassName 메소드는 Document.prototype에 정의된 메소드와 Elment.prototype에 정의된 메소드가 있다.
+     * Document.prototype.getElementsByClassName 메소드는 DOM의 루트 노드인 문서 노드, 즉, document를 통해 호출하며 DOM 전체에서 요소 노드를 탐색하여 반환하고
+     * Element.prototype.getElementsByClassName 메소드는 특정 요소 노드를 통해 호출하며 특정 요소 노드의 자손 노드 중에서 요소 노드를 탐색하여 반환한다.
+     * 
+     *   만약 인수로 전달된 class값을 갖는 요소가 존재하지 않는 경우 getElementsByClassName 메소드는 HTMLCollection 객체를 반환한다.
+     * 
+     * 
+     *      4.CSS 선택자를 이용한 요소 노드 취득
+     * 
+     *          : CSS 선택자는 스타일을 적용하고자 하는 HTML 요소를 특정할 떄 사용하는 문법이다.
+     * 
+     *  [전체 선택자 : 모든 요소를 선택]
+     *   > *{...}
+     *  
+     *  [태그 선택자 : 모든 p태그 요소를 모두 선택]
+     *  > p{...}
+     * 
+     *  [id 선택자 : id 값이 'foo'인 요소를 모두 선택]
+     *  > #foo{...}
+     * 
+     *  [class 선택자 : class값이 'foo'인 요소를 모두 선택]
+     *  > .foo{...}
+     * 
+     *  [어트리뷰트 선택자 : input 요소 중에 type어트리뷰트 값이 'text'인 요소를 모두 선택]
+     *  >input[type=text] {...}
+     * 
+     *  [후손 선택자 : div요소의 후손 요소 중 p 요소를 모두 선택]
+     *  > div p {...}
+     * 
+     *  [자식 선택자 : div요소의 자식 요소 중 p 요소를 모두 선택]
+     *  > div > p {...}
+     * 
+     *  [인접 형제 선택자 : p 요소 형제 요소 중에 p 요소 바로 뒤에 위치하는 ul요소를 선택]
+     *  > div+ul{...}
+     * 
+     *  [일반 형제 선택자 : p요소의 형제 요소 중에 p 요소 뒤에 위치하는 ul요소를 모두 선택]
+     *  > p ~ ul {...}
+     * 
+     *  [가상 클래스 선택자 : hover 상태인 a요소를 모두 선택]
+     *  > a:hover {...}
+     * 
+     *  [가상 요소 선택자 : p 요소 콘텐츠 앞에 위치하는 공간을 선택, 일반적으로 content 프로퍼티와 함께 사용]
+     *  > p::before{...}
+     * 
+     * 
+     * ::::Document.prototype/Element.prototype.querySelector 메소드는 인수로 전달한 css 선택자를 만족시키는 하나의 요소 노드를 탐색하여 반환한다. 
+     * 
+     *  - 인수로 전달한 css 선택자를 만족시키는 요소 노드가 여러 개인 경우 첫 번째 요소 노드만 반환한다.
+     *  - 인수로 전달된 css 선택자를 만족시키는 요소 노드가 존재하지 않는 경우  null을 반환한다. 
+     * 
+     *  - 인수로 전달한 css 선택자가 문법에 맞지 않는 경우 DOMException 에러가 발생한다. 
+     * 
+     * 
+     * 
+     * ::::Document.prototype/Element.prototype.querySelectorAll 메소드는 인수로 전달한 css 선택자를 만족 시키는 모든 요소 노드를 탐색하여 반환한다.
+     * querySelectorAll 메소드는 여러 개의 요소 노드 객체를 갖는 DOM 컬렉션 객체인 NodeList객체를 반환한다. NodeListx 객체는 유사 배열 객체이면서 이터러블이다 .
+     * 
+     *  - 인수로 전달된 css 선택자를 만족시키는 요소가 존재하지 않는 경우 빈 NodeList 객체를 반환한다.
+     * 
+     *  - 인수로 전달한 css 선택자를 문법에 맞지 않는 경우 DOMException 에러가 발색한다. 
+     * 
+     * 
+     * HTML 문서의 모든 요소 노드를 취득하려면 querySelectorAll메소드의 인수로 전체 선택자 '*'를 전달한다. 
+     * getElementsByTagName, getElementsByClassName 메소드와 마찬가지로 querySelector, querySelectorAll 메소드는 Document.prototype에 정의된 메소드와 Element.prototype에 정의된 메소드가 있다. 
+     * Document.prototype에 정의된 메소드는 DOM의 루트 노드인 문서 노드, 즉 document를 통해 호출하며, DOM 전체에서 요소 노드를 탐색하여 반환한다. 
+     * 
+     * CSS 선택자 문법을 사용하는 querySelector, querySelectorAll 메소드는 getElementById, getElementBy*** 메소드보다 다소 느리다. 하지만 css선택자 문법을 사용하여 좀 더 구체적인 조건으로 요소 노드를 취득할 수 있고 일관된 방식으로 요소 노드를 취득할 수 있다는 장점이 있다. 
+     * 따라서 id  어트리뷰트가 있는 요소 노드를 취득하는 경우에는 getElementById 메소드를 사용하고 그 외으 경우에는 querySelector, querySelectorAll 메소드를 사용하는 것을 권장한다. 
      */
+
+
+
+// 특정 요소 노드를 취득할 수 있는지 확인
+    /**
+     *  Element.prototype.matches 메소드는 인수로 전달한 css 선택자를 통해 특정 요소 노드를 취득할 수 있는지 확인한다. 
+     */ 
+
+//<ul id='fruits'>
+//    <li class='apple'>apple</li>
+//    <li class='banana'>banana</li>
+//    <li class='orange'>orange</li>
+//</ul>
+
+    /**
+     * const $apple = document.querySelector('.apple');
+     * 
+     * $apple 노드는 #fruits>li.apple로 취득할 수 있다.
+     * console.log($apple.matches('#fruits>li.apple'));
+     * 
+     * $apple 노드는 #fruits>li.banana로 취득할 수 없다.
+     * console.log($apple.matches('#fruits>li.banana'));
+     * 
+     * Element.prototype.matches 메소드는 이벤트 위임을 사용할 떄 유용하다.
+     */
+
+
+
+
+
+    
