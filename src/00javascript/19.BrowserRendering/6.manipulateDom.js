@@ -348,3 +348,21 @@
        *    7. 어트리뷰트 이름은 대소문자를 구별하지 않지만 대응하는 프로퍼티 키는 카멜 케이스를 따른다. 
        */
       //DOM 프로퍼티 값의 타입 
+      /**
+       * getAttribute 메소드로 취득한 어트리뷰트 값은 언제나 문자열이다 하지만 DOM 프로퍼티로 취득한 최신 상태 값은 문자열이 아닐 수도 있다. 예를 들어 checkBox요소의 checked 어트리뷰트 값은 문자열이지만 checked 프로퍼티 값은  boolean 타입아다.
+       * 
+       */
+
+      //data어트리뷰트와 dataset 프로퍼티
+      /**
+       * data 어트리뷰트와 dataset 프로퍼티를 사용하면 HTML 요소에 정의한 사용자 정의 어트리뷰트와 잡2ㅏ스크립트 간의 데이터를 교환할 수 있다. 
+       * data 어트리뷰트는 data-user-id, data-role과 같이 data- 접ㅈ두사 다음에 임의의 이름을 붙여서 사용한다.
+       */
+// <ul class = "users">
+//   <li id ='1' data-user-id='7621' data-role='admin'> lee <li>
+//   <li id ='2' data-user-id='9524' data-role='subscriber'> kim <li>
+// </ul>
+       /**
+        * data 어트리뷰트 값은 HTMLElement.dataset 프로퍼티로 취득할 수 있다. dataset프로퍼티는 HTML요소의 모든 data 어트리뷰트의 정보를 제공하는 DOMStringMap객체를 반환한다. 
+        * DOMStringMap 객체는 data어트리뷰트의 data- 접두사 다음에 붙인 임의의 이름을 카멜케이스로 변환한 프로퍼티를 가지고 있다. 이 프로퍼티로 data어트리보트의 값을 취득하거나 변경할 수 있다.
+        */
