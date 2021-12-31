@@ -59,6 +59,10 @@
  * //////[ 폼 이벤트 ]//////
  * submit : form 요소 내의 submit 버튼을 클릭했을 떄
  * reset : form 요소 내의 reset 버튼을 클릭했을 떄(최근에 사용 안 함)
+ * //////////////////////////
+ * 
+ * 
+ * //////[ 값 변경 이벤트 ]//////
  * input : input(text, checkbox, radio), select, textarea 요소의 값이 입력/변경 되었을 때
  * change :  change 이벤트는 input 이벤트와는 달리 HTML 요소가 포커스를 잃었을 때 사용자 입력이 종료 되었다고 인식하여 발생한다. 즉, 사용자가 입력을 하고 있을 떄는 input 이벤트가 발생하고 사용자 입력이 종료되어 값이 변경되면 change 이벤트가 발생한다. 
  * readystatechange : HTML 문서의 로드와 파싱 상태를 나타내는 documnet.readyState 프로퍼티 값('loading', 'interact)
