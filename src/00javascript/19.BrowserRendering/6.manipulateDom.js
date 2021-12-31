@@ -365,4 +365,213 @@
        /**
         * data 어트리뷰트 값은 HTMLElement.dataset 프로퍼티로 취득할 수 있다. dataset프로퍼티는 HTML요소의 모든 data 어트리뷰트의 정보를 제공하는 DOMStringMap객체를 반환한다. 
         * DOMStringMap 객체는 data어트리뷰트의 data- 접두사 다음에 붙인 임의의 이름을 카멜케이스로 변환한 프로퍼티를 가지고 있다. 이 프로퍼티로 data어트리보트의 값을 취득하거나 변경할 수 있다.
+        * 
+        * const users = [...docoument.querySelector('.users').children];
+        * 
+        * //user-id가 '7621'인 요소 노드를 취득한다.
+        * const user = users.find(user=>user.dataset.userId === '7621');
+        * //user-id가 7621인 요소 노드에 data-role의 값을 취득한다.
+        * console.log(user.dataset.role) //'admin'
+        * 
+        * //user-id 가 7621인 요소 노드의 data-role값을 변경한다.
+        * user.dataset.role = 'subsriber'
+        * //dataset 프로퍼티는 DOMStringMap객체를 반환한다. 
+        * console.log(user.dataset) // DOMStringMap {userId:'7621', role:'subscriber'}
+        * 
+        * 
+        * data 어트리뷰트의 data-접두사 다음에 조냊하지 않는 이름을 키로 사용하여 dataset 프로퍼티에 값을 할당 하면 HTML요소에 data어트리뷰트가 추가된다. 이떄 dataset프로퍼티에 추가한 카멜 케이스(fooBar)의 프로퍼티 키는 data 어트리뷰트의 data- 접두사 다음에 케밥 케이스로 자동 변경되어 추가된다.
+        * 
         */
+
+
+
+        //스타일
+        /**
+         * //인차인 스타일 조작
+         * HTMLElement.prototype.style 프로퍼티는 setter, getter 모두 존재하는 접근자 프로퍼티로서 요소 노드의 인라인 스타일을 취득하거나 추가 또는 변경한다. 
+         */
+        //<div style='color:red'>HelloWorld!</div>
+        /**
+         * const $div = document.querySelector('div');
+         * //인라인 스타일 취득
+         * console.log($div.style)// CSSStyleDeclaration { 0: "color", ... }
+         * 
+         * //인라인 스타일 변경
+         * $div.style.color = 'blue'
+         * 
+         * //인라인 스타일 추가
+         * $div.style.width = '100px'
+         * $div.style.height = '100px'
+         * $div.style.backgroundColor = 'yellow'
+         * 
+         * style 프로퍼티를 참조하면 CSSStyleDeclaration 타입의 객체를 반환한다. CSSStyleDeclaration 객체는 다양한 css프로퍼티에 대응하는 프로퍼티를 가지고 있으며, 이 프로퍼티에 값을 할당하면  해당 CSSS 프로퍼티가 인라인 스타일로 HTML 요소에 추가되거나 변경된다.
+         * 
+         * CSS 프로퍼티는 케밥케이스를 따른다. 이에 대응하는 CSSStyleDelacration 객체의 프로퍼티는 카멜 케이스를 따른다. 
+         * 
+         */
+
+
+        
+        //클래스 조작
+        /**
+         * .으로 시작하는 클래스 선택자를 사용하여 CSS class를 미리 정의한 다음, HTML 요소의 class어트리뷰트 값을 변경하여 HTML 요소의 스타일을 변경할 수도 있다. 이때 HTML 요소의 class어트리뷰트를 조작하려면 class어트리뷰트에 대응하는 요소 노드의 DOM 프로퍼티를 사용한다. 
+         * 단, class 어트리뷰트에 대응하는 DOM 프로퍼티는 class가 아니라 className과 classList이다. 자바스크립트에서 class는 예약어이기 때문이다. 
+         * 
+         *      //className
+         *      Element.prototype.className 프로퍼티는 setter와  getter 모두 존재하는 접근자 프로퍼티로서 HTML 요소의 class 어트리뷰트 값을 취득하거나 변경한다. 
+         * 요소 노드의 className 프로퍼티를 참조하면 class어트리뷰트 값을 문자뎔로 반환하고, 요소 노드의 className 프로퍼티에 문자열을 할당하며녀  class 어트리뷰트 값을 할당한 문자열로 변경한다. 
+         */
+
+// <style>
+//     .box {
+//         width: 100px; 
+//         height:100px;
+//         background-color : whilte;
+//     }
+//     .red {
+//         color :red;
+//     }
+//     .blue {
+//         color :blue;
+//     }
+// </style>
+
+
+// <div class = 'box red'>HelloWorld</div>
+
+        /**
+         * const $box = document.querySelector('.box')
+         * //.box 요소의 class 어트리뷰트 값을 취득
+         * console.log($box.className)
+         * 
+         * //.box 요소의 class 어트리뷰트 값 중에서 red만 blue로 변경
+         * $box.className = $box.className.replace('red', 'blue')
+         * 
+         * className 프로퍼티는 문자열을 반환하므로 공백으로 구분된 여러 개의 클래스를 반환하는 경우 다루기가 불편하다. 
+         * 
+         *      
+         * 
+         *      //classList
+         * 
+         * Element.prototype.classList 프로퍼티는 class어트리뷰트의 정보를 담은 DOMTokenList 객체를 반환한다. 
+         * 
+         */
+
+
+// <style>
+//     .box {
+//         width: 100px; 
+//         height:100px;
+//         background-color : whilte;
+//     }
+//     .red {
+//         color :red;
+//     }
+//     .blue {
+//         color :blue;
+//     }
+// </style>
+
+
+// <div class = 'box red'>HelloWorld</div>
+
+
+        /**
+         * const $box = document.querySelector('.box')
+         * // .box 요소의 class 어트리뷰트 정보를 담은 DOMTokenList 객체를 취득
+         * //classList가 반환하는 DOMTokenList객체는 HTMLCollection과 NodeList와 같이 노드 객체의 상태 변화를 실시간으로 반영하는 살아있는 객체이다. 
+         * 
+         * console.log($box.classList);
+         * //DOMTokenList(2) [length:2, value :'box blue', 0:'box', 1:'blue']
+         * 
+         * //.box 요소의 class어트리뷰트 값 중에서 'red'만 'blue'로 변경
+         * $box.classList.replace('red', 'blue')
+         * 
+         * 
+         * DOMTokenList 객체는 class 어트리뷰트 정보를 나타내는 컬렉션 객체로서 유사 배열 객체이면서 이터러블이다. DOMTokenList 객체는 다음과 같이 유용한 메서드들을 제공한다. 
+         * 
+         *      .add(...className) : add 메소드는 인수로 전달한 1개 이상의 문자열을 class어트리뷰트 값으로 추가한다.
+         *      
+         *      .remove(...className) : remove 메소드는 인수로 전달한 1개 이상의 문자열과 일치하는 클래스를 class 어튜리뷰트에서 삭제한다. 인수로 전달한 문자열과 일치하는 클래스가 class 어트리뷰트에 없으면 에러 없이 무시된다. 
+         * 
+         * 
+         *      .item(index) : item 메소드는 인수로 전달한 index에 해당하는 클래스를 class어트리뷰트에서 반환한다. 예를 들어 index가 0이면 첫 번째 클래스를 반환하고 index가 1이면 두 번쨰 클래스를 반환한다. 
+         * 
+         *      .contains(className) : contains 메소드는 인수로 전달한 문자열과 일치하는 클래스가 class 어트리뷰트에 포함되어 있는지 확인한다. 
+         * 
+         *      .replace(oldClassName, newClassName) : replace 메소드는 class 어트리뷰트에서 첫 번쨰 인수로 전달한 문자열을 두 번쨰 인수로 전달한 문자열로 변경한다. 
+         * 
+         *      .toggle(className[. force]) : toggle 메소드는 class 어트리뷰트에 인수로 전달한 문자열과 일치하는 클래스가 존재하면 제거하고, 존재하지 않으면 추가한다. 
+         * 
+         * >두 번쨰 인수로 불리언 값으로 평가되는 조건식을 전달할 수 있다. 이때 조건식의 평가 결과가 true이면 class 어트리뷰트에 강제로 첫 번쨰 인수로 전달받은 문자열을 추가하고, flase이면 class 어트리뷰트에서 강제로 첫 번쨰 인수로 전달받은 문자열을 제거한다. 
+         * 
+         * 이 밖에도 DOMTokenList 객체는 forEach, entries, keys, values, supports 메소드를 제공한다. 
+         */
+        
+
+        //요소에 적용되어 있는 CSS 스타일 참조
+        /**
+         * style 프로퍼티 인라인 스타일만 반환한다. 따라서 클래스를 적용한 스타일이나 상속을 통해 암묵적으로 적용된 스타일은 style 프로퍼티로 찾조할 수 없다. 
+         * HTML요소에 적용되어 있는 모든 CSS 스타일을 참조해야할 경우  getComputedStyle 메소드를 사용한다. 
+         * window.getComputedStyle(element[, pseudo])메소드는 첫 번쨰 인수(element)로 전달한 요소 노드에 적용되어있는 평가된 스타일을 CSSStyleDeclaration 객체에 담아 반환한다. 평가된 스타일이란 요소 노드에 적용되어 있는 모든 스타일, 즉 링크 스타일, 임베딩 스타일, 인라인 스타일, 자바스크립트에서 적용한 스타일, 상속된 스타일 기본(userAgent)스타일 등 모든 스타일이 조합되어 최종적으로 적용된 스타일을 말한다. 
+         */
+
+// <style>
+//     body {
+//         color :red;
+//     }
+//     .box {
+//         width:100px;
+//         height:50px;
+//         background-color:cornsilk;
+//         border :1px solid black;
+//     }
+// </style>
+
+// <body>
+//     <div class='box'>
+//             BOX
+//     </div>
+// </body>
+
+        /**
+         * const $box = document.querySelector('.box')
+         * //.box 요소에 적용된 모든 CSS 스타일을 담고 있는 CSSStyleDeclaration 객체를 취득
+         * const computedStyle = window.getComputedStyle($box);
+         * console.log(computedStyle) //CSSStyleDeclaration
+         * 
+         * 
+         * //임베딩 스타일
+         * console.log(computedStyle.width) //100px
+         * console.log(computedStyle.height) //50px
+         * console.log(computedStyle.backgroundColor) //rgb(255,248,220)
+         * console.log(computedStyle.border) //1px solid rgb(0,0,0)
+         * //상속 스타일 body -> .box
+         * console.log(computedStyle.color) //rgb(255,0,0)
+         * //기본 스타일
+         * console.log(computedStyle.display) //block
+         * 
+         * 
+         * getComputedStyle 메소드의 두 번쨰 인수(pseudo)로 :after, :before와 같은 의사 요소를 지정하는 문자열을 전달할 수 있다. 의사 요소가 아닌 일반 요소의 경우 두 번쨰 인수는 생략한다. 
+         */
+
+// <style>
+//     
+//     .box:before {
+//          content:'hello'
+//     }
+// </style>
+
+// <body>
+//     <div class='box'>
+//             BOX
+//     </div>
+// </body>
+
+        /**
+         * const $box = document.querySelector('.box');
+         * 
+         * //의사 요소 :before의 스타일을 취득한다.
+         * const computedStyle = window.getComputedStyle($box, ':before');
+         * console.log(computedStyle.content) //Hello
+         */
