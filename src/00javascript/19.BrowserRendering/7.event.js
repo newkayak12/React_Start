@@ -65,6 +65,15 @@
  * //////[ 값 변경 이벤트 ]//////
  * input : input(text, checkbox, radio), select, textarea 요소의 값이 입력/변경 되었을 때
  * change :  change 이벤트는 input 이벤트와는 달리 HTML 요소가 포커스를 잃었을 때 사용자 입력이 종료 되었다고 인식하여 발생한다. 즉, 사용자가 입력을 하고 있을 떄는 input 이벤트가 발생하고 사용자 입력이 종료되어 값이 변경되면 change 이벤트가 발생한다. 
- * readystatechange : HTML 문서의 로드와 파싱 상태를 나타내는 documnet.readyState 프로퍼티 값('loading', 'interact)
+ * readystatechange : HTML 문서의 로드와 파싱 상태를 나타내는 documnet.readyState 프로퍼티 값('loading', 'interact' , 'complete')이 변경될 때
  * //////////////////////////
+ * 
+ * //////[ DOM 뮤테이션 이벤트 ]//////
+ * DOMContentLoaded : HTML 문서의 로드와 파싱이 완료되어 DOM 생서이 완료되었을 때
+ * ///////////////////////////////
+ * 
+ * 
+ * * //////[ 뷰 이벤트 ]//////
+ * resize 
+ * /////////////////////////
  */
