@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/**
+		 * 	debounce는 짧은 시간 간격으로 이벤트가 연속해서 발생하면 이벤트 핸들러를 호출하지 않다가 일정 시간이 경과한 이벤트 핸들러가 한 번만 호출되도록한다.
+		 * 즉, 디바운스는 짧은 시간 간격으로 발생하는 이벤트를 그룹화해서 마지막에 한 번만 이벤트 핸들러가 호출되도록 한다.
+		 * 
+		 * 예를 들어, 텍스트 입력 필드에서 input 이벤트가 짧은 시간 간격으로 연속해서 발생하는 경우를 살펴보자 
+		 */ 
+	</script>
+	<input type="text">
+	<div class = "msg"></div>
+	
+	<script>
+		const $input = document.querySelector('input')
+		const $msg = document.querySelector('.msg')
+
+		const debounce = (callback, delay) => {
+			let timerId;
+			//debounce 함수는 timerId를 기억하는 클로저를 반환한다. 
+			return event => {
+				//delay가 경과하기 이전에 이벤트가 발생하면 이전 타이머를 취소하고 새로운 타이머를 재설정한다. 
+				//따라서 delay 보다 짧은 간격으로 이벤트가 발생하면 callback은 호출되지 않는다. 
+
+				if(timerId) clearTimeout(timerId)
+				timerId = setTimeout(callback, delay, event)
+			}
+		}
+
+
+		$input.oninput = debounce(e=>{
+			$msg.textContent = e.target.value;
+		}, 300)
+
+		/**
+		 * input 이벤트는 사용자가 텍스트 입력 필드에 값을 입력할 때마다 연속해서 발생한다. 만약 input의 이벤트 핸들러에서 사용자가 입력 필드에 입력한 값으로 Ajax 요청과 같은 무거운 처리를 수행한다면 사용자가 아직 입력을 완료하지 않았어도
+		 * ajax 요청이 전송될 것이다. 이는 서버에도 부담을 주는 불필요한 처리이므로 사용자가 입력을 완료했을 때 한 번만 Ajax 요청을 전송하는 것이 바람직하다.
+		 * 
+		 * 사용자가 입력을 완료했는지 여부는 정확히 알 수 없으므로 일정 시간 동안 텍스트 입력 필드에 값을 입력하지 않으면 입력이 완료된 것으로 간주한다. 이를 위해 debounce 함수가 반환한 함수는 debounce 함수에 두 번쨰 인수로 전달한 시간(delay)
+		 * 보다 짧은 간격으로 이벤트가 발생하면 이전 타이머를 취소하고 새로운 타이머를 재설정한다. 따라서 delay보다 짧은 간격으로 이벤트가 연속해서 발생하면 debounc함수의 첫 번쨰 인수로 전달한 콜백함수는 호출되지 않는다.
+		 * delay 동안 input 이벤트가 더 이상 발생하지 않으면 한 번만 호출된다. 
+		 * 
+		 * 		> e  -  e  -  e  -  e  -  e  -  e  -  e  -  e  -  e  -  e
+		 * 		 ======== delay =========== func  ======== delay ========func 			
+		 * 
+		 * 이처럼 짧은 시간 간격으로 이벤트가 연속해서 발생하면 이벤트 핸들러를 호출하지 않다가 일정 시간 동안 이벤트가 발생하지 않으면 이벤트 핸들러가 한 번만 호출되도록 하는 디바운스는 resize 이벤트 처리나 
+		 * input 요소에 입력된 값으로 ajax 요청하는 입력 필드 자동완성 UI구현, 버튼 중복 클릭 방지처리 등에 유용하게 사용된다.
+		 * 
+		 * 실무에서는 UnderScore의 debounce,  Lodash의  debounce 함수를 사용하는 것을 권장한다.  ======== delay =========== 
+		 * 	
+		 */ 
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/**
+		 * >> 스로틀 
+		 * 스로틀은 짧은 시간 간격으로 이벤트가 연속으로 발생하더라도 일정 시간 간격으로 이벤트 핸들러가 최대 한 번만 호출되도록 한다.
+		 * 즉, 스로틀은 짧은 시간 간격으로 연속해서 발생한는 이벤트를 그룹화해서 일정 시간 단위로 이벤트 핸들러가 호출되도록 호출 주기를 만든다.
+		 * 예를 들어, scroll 이벤트가 짧은 기간으로 연속해서 발생하는 경우를 살펴보자
+		 */ 
+	</script>
+	<style>
+		.container {
+			width: 300px;
+			height: 300px;
+			background-color: rebeccapurple;
+			overflow: scroll;
+		}
+		.content {
+			width: 300px;
+			height: 1000vh;
+		}
+	</style>
+
+	<div class="container">
+		<div class='content'></div>
+	</div>
+	<div>
+		일반 이벤트 핸들러가 scroll 이벤트를 처리한 횟수 : 
+		<div class='normal'>0</div>
+	</div>
+	<div>
+		스로틀 이벤트 핸들러가 scroll 이벤트를 처리한 횟수 : 
+		<div class='throttle'>0</div>
+	</div>
+	
+	<script>
+		const $container = document.querySelector('.container')
+		const $normal = document.querySelector('.normal')
+		const $throttle = document.querySelector('.throttle')
+
+		const throttle = (callback, delay) => {
+			let timerId;
+			//throttle 함수는 timerId를 기억하는 ㅋ르로저를 반환한다. 
+			return event => {
+				//delay가 경과하기 이전에 이벤트가 발생하면 아무 것도 하지 않다가
+				// delay가 경과했을 때 이벤트가 발생하면 새로운 타이머를 재설정한다.
+				// 따라서 delay간격으로 callback이 호출된다.
+				if(timerId) return;
+				timerId = setTimeout(()=>{
+					callback(event);
+					timerId = null
+				}, delay, event)
+			}
+		}
+
+		let normalCount = 0;
+		$container.addEventListener('scroll', ()=>{
+			$normal.textContent = ++normalCount;
+		})
+
+		let throttleCount = 0;
+		//throttle 함수가 반환하는 클로저가 이벤트 핸들러로 등록된다.
+		$container.addEventListener('scroll', throttle(()=>{
+			$throttle.textContent = ++throttle
+		}, 100))
+
+		/**
+		 *  scroll 이벤트는 사용자가 스크롤할 때 짧은 시간 간격으로 연속해서 발생한다. 이처럼 짧은 시간 간격으로 연속해서 발생하는 이벤트의 
+		 * 과도한 이벤트 핸들러의 호출을 방지하기 위해 throttle 함수는 이벤트를 그룹화해서 일정 시간 단위로 이벤트 핸들러가 호출되도록 호출 주기를 만든다.
+		 * 
+		 * throttle 함수 반환한 함수는 throttle 함수에 두 번째 인수로 전달한 시간 (delay)이 경과하기 이전에 이벤트가 발생하면 아무것도 하지 않다가 delay 시간이 경과했을 때 
+		 * 이벤트가 발생하면 콜백 함수를 호출하고 새로운 타이머를 재설정한다. 따라서 delay 시간 간격으로 콜백 함수가 호출된다. 
+		 * 
+		 * 	> e  -  e  -  e  -  e  -  e  -  e  -  e  -  e  -  e  -  e
+		 * 	======== delay =========== func  ======== delay ========func 			
+		 * 
+		 * 
+		 * 이처럼 짧은 시간 간격으로 연속해서 발생하는 이벤트를 그룹화해서 일정 시간 간격으로 이벤트 핸들러를 호출하는 스로틀은 scroll이벤트 처리나 무한 스크롤 UI 구현등에 유용하게 사용된다. 
+		 */ 
+	</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/**
+		 * scroll, resize, input, mousemove 같은 이벤트는 짧은 시간 간격으로 연속해서 발생한다. 이러한 이벤트에 바인딩한 이벤트 핸들러는 과도하게 호출되어 성능에 문제를 일으킬 수 있다.
+		 * 디바운스와 스로틀은 짧은 시간 간격으로 연속해서 발생하는 이벤트를 그룹화해서 과도한 이벤트 핸들러 호출을 방지하는 기법이다.
+		 * 
+		 * 예를 들어, 다음 예제의 버튼을 짧은 시간 간격으로 연속해서 클릭했을 때 일반적인 이벤트 핸들러와 디바운스, 스로틀된 이벤트 핸들러의 호출 빈도가 어떻게 다른지 살펴보자
+		 * 
+		 */ 
+	</script>
+
+	<button>click me</button>
+	<pre>일반 클릭 이벤트 카운터 <span class='normal-msg'>0</span></pre>
+	<pre>디바운스 클릭 이벤트 카운터 <span class='debounce-msg'>0</span></pre>
+	<pre>스로틀 클릭 이벤트 카운터 <span class='throttle-msg'>0</span></pre>
+	
+	<script>
+		const $btn = document.querySelector('button')
+		const $normalMsg = document.querySelector('.normal-msg')
+		const $debounceMsg = document.querySelector('.debounce-msg')
+		const $throttleMsg = document.querySelector('.throttle-msg')
+
+
+		const debounce = (callback, delay) => {
+			let timerId;
+			return event => {
+				console.log('debounce')
+				console.log(callback, delay, event)
+				if(timerId) clearTimeout(timerId);
+				timerId = setTimeout(callback, delay, event)
+			}
+		}
+
+		const throttle = (callback, delay) => {
+			let timerId;
+			return event => {
+				console.log('throttle')
+				console.log(callback, delay, event)
+				if(timerId) return;
+				timerId = setTimeout(()=>{
+					callback(event)
+					timerId = null;
+				}, delay, event)
+			}
+		}
+
+		$btn.addEventListener('click', ()=>{
+			$normalMsg.textContent = +$normalMsg.textContent + 1;
+		})
+
+		$btn.addEventListener('click', debounce(()=>{
+			$debounceMsg.textContent = +$debounceMsg.textContent + 1;
+		},500))
+
+		$btn.addEventListener('click', throttle(()=>{
+			$throttleMsg.textContent = +$throttleMsg.textContent + 1;
+		},500))
+
+		/**
+		 * 디바운스와 스로틀은 이벤트를 처리할 때 매우 유용하다. 디바운스와 스로틀의 구현에는 타이머 함수가 사용된다. 
+		 */ 
+	</script>
+</body>
+</html>
