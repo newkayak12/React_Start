@@ -46,4 +46,6 @@
  * POST: 리소스에 새로운 요소를 생성한다. POST 요청 시에는 setRequestHeader 메소드를 사용하여 요청 몸체에 담아 서버로 전송할 페이로드 MIME 타입을 지정해야한다.
  * PUT : PUT은 특정 리소스 전체를 교체할 때 사용한다. PUT 요청 시에는 setRequestHeader메소드를 사용하여 요청 몸체에 담아 서버로 전송할 페이로드의 MIME 타입을 지정해야한다.
  * PATCH : 특정 리소스의 일부를 수정할 떄사용한다. PATCH 요청 시에는 setRequestHeader 메소드를 사용하여 요청 몸체에 담아 서버로 전송할 페이로드의 MIME 타입을 지정해야한다.
+ * DELETE: 리소스를 삭제할 떄 실행한다.
+ * 
  */
