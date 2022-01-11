@@ -28,3 +28,74 @@ Promise.resolve()
  *  fetch 함수는 HTTP 응답을 나타내는 Response 객체를 래핑한 Promise 객체를 반환한다. fetch 함수로 GET 요청을 전송해보자 첫 번쨰 인수로 HTTP 요청을 전송할 URL만 전달하면 GET 요청을 전송한다.
  */
 fetch('https://jsonplaceholder.typicode.com/todos/1').then(response => console.log(response))
+/**
+ * fetch 함수 HTTP 응답을 나타내는 Response 객체를 래핑한 프로미스르 반환하므로 후속 처리 메소드 then을 통해 프로미스가 resolve한 Response 객체를 전달받을 수 있다.
+ * Response 객체는 HTTP 응답을 나타내는 다양한 프로퍼티를 제공한다.
+ * Response.prototype에는 Response 객체에 포함되어 있는 HTTP 응답 몸체를 위한 다양한 메소드를 제공한다. 예를 들어, fetch 함수가 반환한 프로미스가 래핑하고 있는 MIME 타입이 application/json인 HTTP 응답 몸체를 취득하려면
+ * Response.prototype.json 메소드를 사용한다. Response.prototype.json 메소드는 Response 객체에서 HTTP 응답 몸체를 취득하여 역직렬화 한다.
+ */
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+//response는 HTTP 응답을 나타내는 Response 객체다.
+//json 메소드를 사용하여 Response 객체에서 HTTP 응답 몸체를 취득하여 역직렬화한다.
+.then(response=>response.json())
+    //json은 역직렬화된 HTTP 응답 몸체이다.
+.then(json=>console.log(json))
+    //{userId : 1, id:1, title: 'delectus aut autem", completed:false}
+
+//fetch 함수를 통해 HTTP 요청을 전송해보자. fetch 함수에 첫 번째 인수로 HTTP 요청을 전송할 URL과 두 번쨰 인수로 HTTP 요청 메소드 HTTP 요청 헤더, 페이로드 등을 설정한 객체를 전달한다.
+
+const request = {
+    get(url){
+        return fetch(url);
+    },
+    post(url, payload){
+        return fetch(url, {
+            method:"POST",
+            headers:{'content-Type' : 'application/json'},
+            body: JSON.stringify(payload)
+        });
+    },
+    patch(url, payload) {
+        return fetch(url, {
+            method: 'PATCH',
+            headers : {'content-Type' : 'application/json'},
+            body:JSON.stringify(payload)
+        })
+    },
+    delete(url){
+        return fetch(url, {method : 'DELETE'})
+    }
+}
+
+
+
+//1. GET 요청
+request.get('https://jsonplaceholder.typicode.com/todos/1')
+.then(response => response.json())
+.then(todos => console.log(todos))
+.catch(err => console.error(err));
+
+//2. POST 요청
+request.post('https://jsonplaceholder.typicode.com/todos', {
+    userId:1,
+    title:'JavaScript',
+    completed:false
+})
+.then(response => response.json())
+.then(todos => console.log(todos))
+.catch(err=>console.error(err))
+
+//3. PATCH
+request.patch('https://jsonplaceholder.typicode.com/todos/1', {
+    completed: true
+})
+.then(response => response.json())
+.then(todos => console.log(todos))
+.catch(err => console.error(err))
+
+
+//4. DELETE
+request.delete('https://jsonplaceholder.typicode.com/todos/1')
+.then(response => response.json())
+.then(todos => console.log(todos))
+.then(err => console.error(err))
