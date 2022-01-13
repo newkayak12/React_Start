@@ -166,4 +166,89 @@ console.log(generator.next());// {value : undefined, done: true}
 
 function* genFunc(){
     //처음 next 메소드를 호출하면 첫 번쨰 yield 표현식까지 실행되고 일시 중지된다.
+    //이때 yield 된 값 1은 next 메소드가 반환한 이터레이터 result 객체의 value프로퍼티에 핧당된다.
+    //x변수에는 아직 아무것도 할당되지 않았다. x변수의 값은 next 메소드가 두 번쨰 호출될 떄 결정된다.
+    const x = yield 1;
+
+    //두 번쨰 next 메소드를 후출할 때 전달한 인수 10은 첫 번쨰 yield 표현식을 할당받는
+    //x변수에 할당된다. 즉, const x = yield 1; 은 두 번째 next 메소드를 호출했을 떄 완료된다.
+    //두 번쨰 next 메소드를 호출하면 두 번째 yield 표현식까지 실행되고 일시 중지된다.
+    //이떄 yield된 값 x + 10은 next 메소드가 반환한 이터레이터 result 객체의 value 프로퍼티에 할당된다.
+    const y = yield (x+10)
+
+    //세 번쨰 next 메소드를 호출 할 떄 전달한 인수 20은 두 번쨰 yield 표현식을 할당받는 y 변수에 할당된다.
+    //즉, const y = yield(x+10); 는 세 번째  next 메소드를 호출 했을 때 완료된다.
+    //세 번쨰 next 메소드를 호출하면 함수 끝까지 실행된다.
+    //이때 제너레이터 함수의 반환값 x+y는  next 메소드가 반환한 이터레이터 result 객체의
+    //value 프로퍼티에 할당된다. 일반적으로 제너레이터의 반환값은 의미가 없다.
+    //따라서 제너레이터에서는 값을 반환할 필요가 없고 return은 종료의 의미로만 사용해야한다.
+    return x+y
+}
+
+//제너레이터 함수를 호출하면 제너레이터 객체를 반환한다.
+//이터러블이며 동시에 이터레이터인 제너레이터 객체는 next메소드를 갖는다.
+const generator = genFunc(0)
+
+//처음 호출하는 next 메소드에는 인수를 전달하지 않는다.
+//만약 처음 호출하는 next 메소드에 인수를 전달하면 무시된다.
+//next 메소드가 반환한 이터레이터 result 객체의 value 프로퍼티에는 첫 번쨰 yield된 값 1이 할당된다.
+
+let res = generator.next();
+console.log(res)// {value : 1, done:false}
+
+//next메소드에 인수로 전달한 10은 genFunc함수의 x변수에 할당된다.
+//next 메소드가 반환한 이터레이터 result  객체의 value 프로퍼티에는 두 번쨰 yield된 값 20이 할당된다.
+res = generator.next(10)
+console.log(res)// {value:20, done:false}
+
+//next 메소드에 인수로 전달한 20은 genFunc 함수의 y 변수에 할당된다.
+//next메소드가 반환한 이터레이터 리절트 객체의 value 프로퍼티에는 제너레이터 함수의 반환값 30이 할당된다.
+res = generator.next(20)
+console.log(res) // {value:30, done:true}
+
+/**
+ * 이처럼 제너레이터 함수는 next 메소드와 yield 표현식을 통해 함수 호출자와 함수의 상태를 주고 받을 수 있다. 함수 호출자는 next 메소드를 통해 yield 표현식까지 함수를 실행시켜 제너레이터 객체가 관리하는 상태(yield된 값)를 꺼내올 수 있고,
+ * next 메소드에 인수를 전달해서 제너레이터 객체에 상태(yield 표현식을 할당받는 변수)를 밀어 넣을 수 있다. 이러한 제너레이터의 특성을 활용하면 비동기 처리를 동기 처리처럼 구현할 수 있다.
+ */
+
+
+//제너레이터의 활용
+/**
+ * //이터러블의 구현
+ * 제너레이터 함수를 사용하면 이터레이션 프로토콜을 준수해 이터러블을 생성하는 방식보다 간단히 이터러블을 구현할 수 있다. 먼저 이터레이션 프로토콜을 준수하여 무한 피보나치 수열을
+ * 생성하는 함수를 구현해 보자
+ */
+//무한 이터러블을 생성하는 함수
+const infiniteFibonacci = (function () {
+    let [pre, cur] = [0,1];
+    return {
+        [Symbol.iterator] () { return this; },
+        next(){
+            [pre,cur] = [cur, pre + cur];
+            //무한 이터러블이므로 done 프로퍼티를 생략한다.
+            return { value : cur};
+        }
+    }
+}());
+
+//infiniteFibonacci는 무한 이터러블이다.
+for(const num of infiniteFibonacci){
+    if(num>10000) break;
+    console.log(num)
+}
+
+
+//이 다음에는 제너레이터를 사용하여 무한 피보나치 수열을 생성하는 함수를 구현해보자 제너레이터 함수를 사용하면 이터레이션 프로토콜을 준수해 이터러블을 생성하는 방식보다 간단히 이터러블을 구현할 수 있다.
+const infiniteFibonacci2 = (function* () {
+    let [pre, cur] = [0,1]
+    while(true){
+        [pre, cur] = [cur, pre+cur]
+        yield cur;
+    }
+}());
+
+// infiniteFibonacci2는 무한 이터러블이다.
+for(const num of infiniteFibonacci2){
+    if(num> 10000) break;
+    console.log(num)
 }
