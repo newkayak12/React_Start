@@ -75,3 +75,33 @@ async function foo(){
     console.log([a,b,c])
 }
 foo();
+A
+/**
+ * 모든 프로미스에 await 키워드를 사용하는 것은 주의해야 한다. 위 예제 foo()는 종료될 떄까지 약 6초가 소요된다.
+ * 그런데 foo함수가 수행하는 3개의 비동기 처리는 서로 연관이 없이 개별적으로 수행되는 비동기 처리이므로 앞선 비동기 처리가 끝날떄까지 순차적으로 대기할 필요가 없다. 따라서 foo()함수는 아래와 같이 처리하는게 좋다.
+ */
+
+async function zoo(){
+    const res = await Promise.all([
+    await new Promise(resolve => setTimeout(()=>resolve(1), 3000)),
+    await new Promise(resolve => setTimeout(()=>resolve(2), 2000)),
+    await new Promise(resolve => setTimeout(()=>resolve(3), 1000))
+])
+    console.log(res)
+}
+zoo();
+
+// 다음의 zar는 앞선 비동기 처리의 결과를 가지고 다음 비동기 처리를 수행해야한다. 따라서 비동기 처리의 순서가 보장되어야하므로 모든 프로미스에 await을 써서 순차적으로 처리할 수 밖에 없다.
+async function zar(n){
+    const a = await new Promise(resolve => setTimeout(()=>resolve(n), 3000))
+    const b = await new Promise(resolve => setTimeout(()=>resolve(a + 1), 2000))
+    const c = await new Promise(resolve => setTimeout(()=>resolve(b + 1), 1000))
+    console.log([a,b,c])
+}
+zar(1);
+
+
+//에러 처리
+/**
+ * 비동기 처리를 위한 콜백 패턴의 단점 중 가장 심각한 것은 에러 처리가 곤란하다는 것이다.
+ */
