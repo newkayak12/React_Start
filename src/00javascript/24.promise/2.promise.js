@@ -3,7 +3,7 @@
  * 콜백 패턴은 에러 처리가 곤란하다는 문제가 있다. 프로미스는 에러를 문제없이 처리할 수 있다. 
  */ 
  
- const promisedGet2( url ) => {
+ const promisedGet2 = ( url ) => {
     return new Promise((resolve, reject)=>{
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url);

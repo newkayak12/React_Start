@@ -2,7 +2,7 @@
 /**
  * 	자바스크립트는 비동기 처리를 위한 하나의 패턴으로 콜백함수를 사용한다.
  * 하지만 전통적인 콜백 패턴은 콜백헬로 인해 가독성이 나쁘고 비동기 처리 중 발생한 에러의 처리가 곤란하여 여러 개의 비동기 처리를 한 번에 처리하는 데도 한계가 있다.
- * ES6에서 비동기 처리르 ㄹ위한 또 다른 패턴으로 프로미스를 도입했다. 프로미스는 전통적인 콜백 패터닝 가진 단점을 보완하여 비동기 처리 시점을 명확하게 표현할 수 있다는 장점이 있다. 
+ * ES6에서 비동기 처리르 ㄹ위한 또 다른 패턴으로 프로미스를 도입했다. 프로미스는 전통적인 콜백 패터닝 가진 단점을 보완하여 비동기 처리 시점을 명확하게 표현할 수 있다는 장점이 있다.
  */
 
 
@@ -161,7 +161,7 @@ const g = modifiedGet3;
 
 g('/step1', a => {
 	g(`/step2/${a}`, b => {
-		g(`/step3/${b}` c => {
+		g(`/step3/${b}`, c => {
 			g(`/step4/${c}`, d => {
 				console.log(d)
 			})	
@@ -224,7 +224,7 @@ try{
  * Promise 생성자 함수가 인수로 전달받은 콜백 함수 내부에서 비동기 처리를 수행한다. 이때 비동기 처리가 성공하면 콜백 함수의 인수로 전달받은 resolve 함수를 호출하고, 비동기 처리가 실패하면 reject 함수를 호출한다.
  */
 
-const promisedGet( url ) => {
+const promisedGet = ( url ) => {
 	return new Promise((resolve, reject)=>{
 		const xhr = new XMLHttpRequest();
 		xhr.open("GET", url);
@@ -341,7 +341,7 @@ promisedGet('https://jsonplaceholder.typicode.com/posts/1');
 	new Promise(()=>{}).finally(()=>console.log('finally'))
 
 	//이를 적용하면 아래와 같다.
-	const promisedGet( url ) => {
+	const promisedGet = ( url ) => {
 		return new Promise((resolve, reject)=>{
 			const xhr = new XMLHttpRequest();
 			xhr.open("GET", url);
