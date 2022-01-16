@@ -103,5 +103,30 @@ zar(1);
 
 //에러 처리
 /**
- * 비동기 처리를 위한 콜백 패턴의 단점 중 가장 심각한 것은 에러 처리가 곤란하다는 것이다.
+ * 비동기 처리를 위한 콜백 패턴의 단점 중 가장 심각한 것은 에러 처리가 곤란하다는 것이다. 에러는 호출자 방향으로 전파된다. 즉, 콜 스택의 아래 방향 (실행 중인 실행 컨텍스트가 푸시되기 직전에 푸시된 실행 컨텍스트 방향)으로 전파된다.
+ * 하지만 비동기 함수의 콜백 함수를 호출한 것은 비동기 함수가 아니기 때문에 try...catch문을 사용해서 에러를 캐치할 수 없다.
+ */
+try{
+    setTimeout(()=> {throw new Error('error!');}, 1000)
+} catch (e) {
+    //에러를 캐치하지 못한다.
+    console.log('캐치한 에러', e)
+}
+
+/**
+ * async/await에서 에러 처리 try...catch 문을 사용할 수 있다. 콜백 함술글 인수로 전달받는 비동기 함수와는 달리 프로미스를 반환하는 비동기 함수는 명시적으로 호출할 수 있기 때문에 호출자가 명확하다.
+ */
+const fetch = require('node-fetch')
+const foo = async () => {
+    try{
+        const wrongUrl = 'https;//wrong.url'
+        const response = await fetch(wrongUrl)
+        const data = await response.json()
+        console.log(data)
+    }catch(err){
+        console.error(err)
+    }
+}
+/**
+ * foo함수의 catch문 HTTP 통신에서 발생한 네트워크 에러뿐 아니라 try 코드 블록 내의 모든 문에서 발생한 일반적인 에러까지 모두 캐치할 수 있다.
  */
