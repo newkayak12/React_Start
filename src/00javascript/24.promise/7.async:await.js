@@ -155,3 +155,25 @@ const promise = new Promise(((resolve, reject) => {
  * Promise 생서앚 함수가 인수로 전달받은 콜백 함수 내부에서 비동기 처리를 수행한다. 이때 비동기 처리가 성공하면 콜백 함수의 인수로 전달받은 resolve 함수를 호출하고,
  * 비동기 처리가 실패하면 reject 함수를 호출한다.
  */
+//get 요청을 위한 비동기 함수
+const promiseGet = url => {
+    return new Promise((resolve, reject) => {
+        const xhr =  new XMLHttpRequest();
+        xhr.open("GET", url)
+        xhr.send();
+
+        xhr.onload = () => {
+            if(xhr.status === 200){
+                resolve(JSON.parse(xhr.response))
+            } else {
+                reject(new Error(xhr.status))
+            }
+        }
+    })
+}
+promiseGet('https://jsonplaceholder.typicode.com/posts/1')
+/**
+ * 비동기 함수인 promiseGet은 함수 내부에서 프로미스를 생성하고 반환한다. 비동기 처리는 promise 생성자 함수가 인수로 전달받은
+ * 콜백 함수 내부에서 수행한다. 만약 비동기 처리가 성공하면 비동기 처리 결과를 resolve 함수에 인수로 전달하면서 호출하고, 비동기 처리가 실패하면
+ * 에러를 reject 함수에 인수로 전달하면서 호출한다. 프로미스는 아래와 같이 현재 비동기 처리가 어떻게 진행되고 있는지를 나타내는 상태 정보를 갖는다.
+ */
