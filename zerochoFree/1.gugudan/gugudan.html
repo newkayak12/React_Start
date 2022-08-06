@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gugudan</title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+    class Gugudan extends React.Component{
+        constructor(props) {
+            super(props);
+            //data(){return {}}
+            this.state = {
+                first: Math.ceil((Math.random()*9)),
+                second:Math.ceil((Math.random()*9)),
+                value: '',
+                result:''
+            }
+        }
+        //script
+        onChange = (e)=> this.setState({value: e.target.value})
+        onClick = (e) =>{
+            e.preventDefault()
+            if(parseInt(this.state.value) === (this.state.first * this.state.second)){
+                this.setState({
+                    result:'정답',
+                    first:Math.ceil((Math.random()*9)),
+                    second:Math.ceil((Math.random()*9)),
+                    value:'',
+                })
+            } else {
+                this.setState({
+                    result:'땡',
+                    value:'',
+                })
+            };
+        }
+        //template
+        render(){
+            return (
+                <div>
+                    <p>{this.state.first} 곱하기 {this.state.second} 은(는)?</p>
+                    <input type="number" value={this.state.value} onChange={this.onChange}/>
+                    <button onClick={this.onClick}>입력</button>
+                    <div>{this.state.result}</div>
+                </div>
+            );
+        }
+    }
+</script>
+<script type="text/babel">
+    ReactDOM.render(<Gugudan />, document.querySelector('#root'));
+</script>
+</html>

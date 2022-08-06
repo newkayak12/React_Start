@@ -1,0 +1,135 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>-->
+    <!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>-->
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel"> //여기가 babel 렌더 선언 부분
+  'use strict';
+
+  class LikeButton extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {liked: false};
+    }
+
+    /**
+     * constructor 안 쓰려고 하는 노력들이래요 아래는
+     * state = {liked:false}
+     *
+     *
+     * function onClickBtn(){
+     *     this.setState({liked:true})
+     * }
+     *
+     *
+     *  로해서 onClick에 {this.onClickBtn}
+     *  으로 하면 안된대요.. 원래는 this가 이 클래스인데 리액트에서는 리액트 vm인가봐요..
+     *  그래서 생성자에서 this.onClickBtn = this.onClickBtn.bind(this)로 class 인스턴스를 바인딩 해야하나봐요.. 꽤 귀찮네요?
+     *
+     *
+     *  혹은 onClickBtn = () => {} 으로 사용하면 bind 굳이 안해도 될거 같네요
+     */
+
+
+    /**
+     * 그래서! 함수 컴포넌트로 넘어가보면? (this 쓸 일이 없다네요)
+     *  function likeBtn() {
+     *      const [liked, setLiked] = React.useState(false); -> this.state랑 비슷 ==========> 변수/ mutation 이런 순선가봄
+     *      구조분해 뭐.. 배열에서 [liked, setLiked] 이면 const liked = result[0]
+     *       {liked, setLiked}도 나오는데?
+     *
+     *      그리고 React.useState는 대략적으로
+     *      React = {
+     *          useState(value){
+     *              const setValue = (newValue) => {
+     *              value = newValue
+     *
+     *              return [value, setValue]
+     *          }
+     *
+     *      }가 되겠네요
+     *
+     *
+     *
+요    *      결국 return 한게 화면이다 이말이야
+     *
+     *      if(liked){
+     *          return "youLikedThis
+     *      }
+     *      return {
+     *          <button onClick=(()=>{setLiked(true)})>Like</button>
+     *      }
+     *  }
+     *  //이거 옛날에 유지보수하다 봤던 형태네요
+     */
+
+    render() {
+      //화면 그림
+      if (this.state.liked) {
+        return 'You liked this.';
+
+      }
+      //addEventListener('click', ()=> this.setState({liked:true}))
+      return (
+              //btn을 return 하거나
+              <div>
+
+                <button onClick={() => this.setState({liked: true})} obj={{a:'b', c:'d'}}>
+                Like
+                </button>
+                <button >
+                  {1+1===2? "true":"false"}
+                  {[1,2,3].map((i)=>{
+                    return <div>{i}</div>;
+                  })}
+                </button>
+
+                <input type="text"/>
+              </div>
+              /**
+               * 원래 이런 문법 안되는게 맞지.? 근데 바벨로 렌더링하는거라(jsx에서)
+               * <div> -> <>
+               * // 이벤트는 () => {}
+               * <button onClick={() => this.setState({liked: true})}   obj={{a:'b', c:'d'}}>
+               *     { ***description
+               *          onClick={() => { this.state.liked = true} 안되나요? -> 객체를 함부로 바꾸면 안됨(불변성)
+               *
+               *          const array = []
+               *          - 여기서 pop, push, shift, unshift, splice -> 원본 배열 수정 _ 리액트에서는 이런거 쓰면 안된다네...
+               *                 concat, slice                      -> 새로운 배열 리턴
+               *            의 차이? -> 원본을 바꾸냐 아니냐일걸?
+               *
+               *            여튼 그래서 setState로 mutation이 가능하게 만들어뒀나봄
+               *     }봄               *
+               *      Like
+               * </button>
+               * //  JS는 {}로 감싸기, obj 경우 {{}}
+               * <button >{1+1}</button>
+               *
+               *    <input type="text"/>
+               * //  텍스트는 ""로 감싸기
+               * </div> -> </>(fragment로 쓸 수 있다. Vue3에 fragment랑 같은데 vue3는 <></> 굳이 안써도 도는거 같네요)
+               *
+               */
+
+      );
+    }
+  }
+
+/**
+ * jsx -> xml...
+ *
+ */
+</script>
+<script type="text/babel">
+  ReactDOM.render(<LikeButton/>, document.querySelector('#root'));//rct 17
+  // ReactDOM.createRoot(document.querySelector('#root')).render(<LikeButton/>); //rct 18
+</script>
+</body>
+</html>
