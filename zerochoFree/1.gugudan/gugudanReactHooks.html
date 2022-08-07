@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>-->
+    <!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>-->
+    <title>Title</title>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    //reactHooks
+    //함수 컴포넌트 ---- setState, ref를 쓰지 않는 경우
+    //여기에 setState, ref를 쓸 수 있게 해준게 reactHooks
+    //useEffect도 있다는데 이거 봤음
+    const Gugudan = () =>{
+        const [first, setFirst] = React.useState(Math.ceil(Math.random()*9))
+        const [second, setSecond] = React.useState(Math.ceil(Math.random()*9))
+        const [value, setValue] = React.useState('')
+        const [result, setResult] = React.useState('')
+        const ref = (c) =>{
+            this.input = c
+        }
+        const onChange = (e) => {
+            setValue(e.target.value)
+        }
+        const onClick = (e) => {
+            e.preventDefault()
+            if(parseInt(value) === (first * second)){
+                setResult(`${prevState.value}입니다! 정답`)
+                setFirst(Math.ceil((Math.random()*9)))
+                setSecond(Math.ceil((Math.random()*9)))
+                setValue('')
+            } else {
+                setResult('땡')
+                setValue('')
+            };
+            this.input.focus()
+        }
+        return (
+            <React.Fragment>
+                <p>{first} 곱하기 {second} 은(는)?</p>
+                <input ref={ref} type="number" value={value} onChange={onChange}/>
+                <button onClick={onClick}>입력</button>
+                <div>{result}</div>
+            </React.Fragment>
+        )
+    }
+</script>
+<script type="text/babel">
+    ReactDOM.render(<Gugudan/>, document.querySelector('#root'));//rct 17
+</script>
+</body>
+</html>
