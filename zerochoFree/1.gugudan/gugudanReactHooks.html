@@ -51,12 +51,12 @@
         //className으로 써야한다.
         //label에 for은 반복 for이랑 헷깔려서  htmlFor로 바꿔서 써야한다.
         return (
-            <React.Fragment>
+            <>
                 <p>{first} 곱하기 {second} 은(는)?</p>
                 <input ref={inputRef} type="number" value={value} onChange={onChange}/>
                 <button onClick={onClick}>입력</button>
                 <div>{result}</div>
-            </React.Fragment>
+            </>
         )
     }
 </script>
