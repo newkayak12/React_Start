@@ -1,0 +1,8 @@
+require, import 호환 가능함( require는 node, import는 es2015 )
+
+
+export default( == module.export)는 한 번만
+export const hello = "hello"는 여러 번 가능
+module.exports = { hello: 'a' }(es2015), exports.hello = 'a'(node)는 같다.
+
+-> import 는 babel이 require로 변경해준다.
