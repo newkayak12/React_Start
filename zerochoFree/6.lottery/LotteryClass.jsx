@@ -62,6 +62,7 @@ class LotteryClass extends Component{
         const {presentNumber, presentWinNumber} = this.state
         return (
             <>
+                <h1>Lottery</h1>
                 {presentNumber.length>0? <p>번호</p>:null}
                 <div style={{display:"flex"}}>
                     {presentNumber.map((v,i)=> <LotteryBallClass number={v} hidden={false} key={i}/>)}

@@ -1,31 +1,31 @@
-import React, {Component} from "react";
-class LotteryBallClass extends Component{
+import React, {PureComponent} from "react";
+class LotteryBallClass extends PureComponent{
 
     classNamer = () =>{
         if(this.props.hidden){
-            return 'ball hidden'
+            return ' hidden'
         }
         if(this.props.number>36){
-            return 'ball purple'
+            return ' purple'
         }
         if(this.props.number>27){
-            return 'ball blue'
+            return ' blue'
         }
         if(this.props.number>18){
-            return 'ball green'
+            return ' green'
         }
         if(this.props.number>9){
-            return 'ball orange'
+            return ' orange'
         }
         if(this.props.number>0){
-            return 'ball red'
+            return ' red'
         }
     }
 
     render() {
         return (
             <>
-                <div className={this.classNamer()} >
+                <div className={`ball ${this.classNamer()}`} >
                     {this.props.number}
                 </div>
             </>
