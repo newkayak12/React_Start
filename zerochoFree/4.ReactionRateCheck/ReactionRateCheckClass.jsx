@@ -46,7 +46,18 @@ class ReactionRateCheckClass extends Component {
         }
 
     }
-
+    onReset = () =>{
+        this.setState({result:[]})
+    }
+    avg = () =>{
+        const {result} = this.state
+        return (
+            <>
+                {result.length === 0 ? null : <div>평균: {result.reduce((p, n) => p + n, 0) / result.length}ms</div>}
+                <button onClick={this.onReset}>REST</button>
+            </>
+        )
+    }
     render(){
         const {state, msg, result} = this.state
         return(
@@ -55,7 +66,7 @@ class ReactionRateCheckClass extends Component {
                 <div id="screen" className={state} onClick={this.clickScreen}>
                     <p>{msg}</p>
                 </div>
-                {result.length === 0? null : <div>평균: {result.reduce((p, n) => p + n, 0) / result.length}ms</div>}
+                {this.avg()}
 
             </>
         )

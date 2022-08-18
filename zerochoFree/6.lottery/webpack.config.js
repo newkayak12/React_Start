@@ -3,7 +3,7 @@ const webpack =require('webpack')
 const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = {
-  name:'reactionRateCheck-setting',
+  name:'lottery-setting',
     mode:'development',
   mode:'development',
   devtool: 'eval',
