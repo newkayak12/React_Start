@@ -50,6 +50,25 @@ const LotteryHooks = () => {
     //     }
     // })
     // return 을 하면 componentWillUnmount
+    /**
+     *
+     *
+     * 나는 componentDidMount 없이 componentDidMount만 하겠다.
+     *
+     * const mounted = useRef(false)
+     *     useEffect(() => {
+     *       if(!mounted.current){
+     *           mounted.current = true
+     *       } else {
+     *
+     *       }
+     *     }, [바뀌는 값]);
+     *
+     * 와 같이하면 OK
+     */
+
+
+
     const onClickRedo = () => {
         console.log('onClickRedo');
         setWinNumbers(lottoNumbers)
