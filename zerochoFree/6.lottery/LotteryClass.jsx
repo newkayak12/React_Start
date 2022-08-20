@@ -22,6 +22,10 @@ class LotteryClass extends Component{
         this.state.number = arr.slice(0, 6)
         this.state.winNumber = arr.slice(6, arr.length)
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        //언제 업뎃할지?
+        console.log(prevProps, prevState, snapshot)
+    }
 
     collect = () =>{
         const {presentNumber, presentWinNumber, number, winNumber} = this.state
