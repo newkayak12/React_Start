@@ -60,7 +60,7 @@ const WordRelay = () =>{
      *
      * 참조 [https://goshacmd.com/controlled-vs-uncontrolled-inputs-react/]
      *
-     * unControlledInput에 기본값을 넣고 싶으면 defaultValue=''로 넣는다. 
+     * unControlledInput에 기본값을 넣고 싶으면 defaultValue=''로 넣는다.
      */
 }
 module.exports = WordRelay
