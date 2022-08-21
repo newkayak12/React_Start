@@ -3,9 +3,8 @@ import ReactDom from 'react-dom/client'
 
 //class
 // import TicTacToe from "@/TictactoeClass";
-//reducerHooks..
 //()=>{}
-import TicTacToe from "@/TictactoeHooks";
+import MineSweeper from "@/MineSweeper";
 //구버전
 // ReactDom.render(<Rsp/>, document.querySelector('#root') )
-ReactDom.createRoot(document.querySelector('#root')).render(<TicTacToe/>)
+ReactDom.createRoot(document.querySelector('#root')).render(<MineSweeper/>)

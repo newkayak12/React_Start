@@ -1,6 +1,6 @@
 import React, {useState, useRef, useReducer, useEffect} from "react";
 import ComponentTr from "@/ComponentTr";
-const TictactoeHooks = ({onClick, tableData, dispatch}) => {
+const ComponentTable = ({onClick, tableData, dispatch}) => {
     const [] = useState([])
     return (
         <>
@@ -13,4 +13,4 @@ const TictactoeHooks = ({onClick, tableData, dispatch}) => {
         </>
     )
 }
-export  default TictactoeHooks
+export  default ComponentTable
