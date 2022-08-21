@@ -3,6 +3,7 @@ import MineTable from "./MineTable";
 import Form from "./Form";
 export const TableContext = createContext({
     tableData:[],
+    halted:true,
     dispatch: () => {}
 })
 export const TYPE = {
@@ -17,11 +18,11 @@ export const MINE_STATUS = {
     OPENED: 0,
     NORMAL: -1,
     QUESTION: -2,
-    FLAG:-3,
+    FLAG: -3,
     QUESTION_MINE: -4,
     FLAG_MINE: -5,
     CLICKED_MINE: -6,
-    MINE: - 7,
+    MINE: -7,
 }
 
 
@@ -82,7 +83,8 @@ const reducer = (state, action) => {
         case TYPE.START_GAME: {
             return {
                 ...state,
-                tableData: platMine(action.row, action.cell, action.mine)
+                tableData: platMine(action.row, action.cell, action.mine),
+                halted: false
             }
         }
         case TYPE.OPEN_CELL: {
@@ -95,7 +97,6 @@ const reducer = (state, action) => {
             }
         }
         case TYPE.CLICK_MINE: {
-            console.log(action)
             const tableData = [...state.tableData]
             tableData[action.row] = [...state.tableData[action.row]]
             tableData[action.row][action.cell] = MINE_STATUS.CLICKED_MINE
@@ -106,24 +107,28 @@ const reducer = (state, action) => {
             }
         }
         case TYPE.FLAG_CELL:{
+            console.log(state, action)
             const tableData = [...state.tableData]
             tableData[action.row] = [...state.tableData[action.row]]
-            tableData[action.row][action.cell] = MINE_STATUS.FLAG
-            if(tableData[action.row][action.cell]===MINE_STATUS.FLAG_MINE){
+
+            if(tableData[action.row][action.cell]===MINE_STATUS.MINE){
                 tableData[action.row][action.cell] = MINE_STATUS.FLAG_MINE
+            } else {
+                tableData[action.row][action.cell] = MINE_STATUS.FLAG
             }
             return {
                 ...state,
-                tableData,
+                tableData
             }
         }
 
         case TYPE.QUESTION_CELL:{
             const tableData = [...state.tableData]
             tableData[action.row] = [...state.tableData[action.row]]
-            tableData[action.row][action.cell] = MINE_STATUS.QUESTION
-            if(tableData[action.row][action.cell]===MINE_STATUS.QUESTION_MINE){
+            if(tableData[action.row][action.cell]===MINE_STATUS.FLAG_MINE){
                 tableData[action.row][action.cell] = MINE_STATUS.QUESTION_MINE
+            } else {
+                tableData[action.row][action.cell] = MINE_STATUS.QUESTION
             }
             return {
                 ...state,
@@ -133,17 +138,17 @@ const reducer = (state, action) => {
         case TYPE.NORMALIZE_CELL:{
             const tableData = [...state.tableData]
             tableData[action.row] = [...state.tableData[action.row]]
-            tableData[action.row][action.cell] = MINE_STATUS.NORMAL
+
             if(tableData[action.row][action.cell]===MINE_STATUS.QUESTION_MINE){
                 tableData[action.row][action.cell] = MINE_STATUS.MINE
+            } else {
+                tableData[action.row][action.cell] = MINE_STATUS.NORMAL
             }
             return {
                 ...state,
                 tableData,
             }
         }
-
-
         default:
             return state
     }
@@ -152,7 +157,7 @@ const reducer = (state, action) => {
 
 const MineSweeper = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const value = useMemo(() => ({tableData: state.tableData, dispatch}), [state.tableData]);
+    const value = useMemo(() => ({tableData: state.tableData, halted: state.halted, dispatch}), [state.tableData, state.halted]);
     return (
         <TableContext.Provider value={value}>
             {/*<Form dispatch={dispatch()} />*/}

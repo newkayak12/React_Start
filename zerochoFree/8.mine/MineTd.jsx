@@ -1,7 +1,9 @@
 import React, {useMemo, memo, useRef, useCallback, useEffect, useContext} from "react";
 import {TableContext, MINE_STATUS, TYPE} from "./MineSweeper";
+
+
 const getTdStyle = (code)=>{
-    console.log(code)
+
     const {
         OPENED,
         NORMAL,
@@ -12,6 +14,7 @@ const getTdStyle = (code)=>{
         CLICKED_MINE,
         MINE
     } = MINE_STATUS
+
     switch (code){
         case NORMAL:
         case MINE:
@@ -30,6 +33,7 @@ const getTdStyle = (code)=>{
     }
 }
 const getTdText = (code)=>{
+
     const {
         OPENED,
         NORMAL,
@@ -40,6 +44,7 @@ const getTdText = (code)=>{
         CLICKED_MINE,
         MINE
     } = MINE_STATUS
+
     switch (code){
         case NORMAL:
             return ''
@@ -59,34 +64,12 @@ const getTdText = (code)=>{
             return ''
     }
 }
-const MineTd = memo(({rowIndex, cellIndex, cellData}) => {
-    const {tableData, dispatch} = useContext(TableContext);
-    const onClickTd = useCallback(() => {
-            const {
-                OPENED,
-                NORMAL,
-                QUESTION,
-                FLAG,
-                QUESTION_MINE,
-                FLAG_MINE,
-                CLICKED_MINE,
-                MINE
-            } = MINE_STATUS
-            switch (cellData){
-                case OPENED:
-                case FLAG_MINE:
-                case FLAG:
-                case QUESTION_MINE:
-                case QUESTION:
-                case NORMAL:
-                    dispatch({type:TYPE.OPEN_CELL, row: rowIndex, cell: cellIndex})
-                    return
-                case MINE:
-                    dispatch({type:TYPE.CLICK_MINE, row:rowIndex, cellIndex})
+const MineTd =({rowIndex, cellIndex}) => {
+    const {tableData, halted, dispatch} = useContext(TableContext);
 
-            }
-        },[cellData]);
-    const onRightClickTd = useCallback( (e) => {
+
+    const onClickTd = useCallback((e) => {
+
         const {
             OPENED,
             NORMAL,
@@ -97,25 +80,56 @@ const MineTd = memo(({rowIndex, cellIndex, cellData}) => {
             CLICKED_MINE,
             MINE
         } = MINE_STATUS
+
+        if(halted) return
+            switch (tableData[rowIndex][cellIndex]){
+                case OPENED:
+                case FLAG_MINE:
+                case FLAG:
+                case QUESTION_MINE:
+                case QUESTION:
+                case NORMAL:
+                    dispatch({type:TYPE.OPEN_CELL, row: rowIndex, cell: cellIndex})
+                    return
+                case MINE:
+                    dispatch({type:TYPE.CLICK_MINE, row:rowIndex, cell:cellIndex})
+                    return
+            }
+        },[tableData[rowIndex][cellIndex]]);
+    const onRightClickTd = useCallback( (e) => {
+
+        const {
+            NORMAL,
+            QUESTION,
+            FLAG,
+            QUESTION_MINE,
+            FLAG_MINE,
+            MINE
+        } = MINE_STATUS
+
         e.preventDefault()
-        switch (cellData){
-            case NORMAL:
-            case MINE:
+        if(halted) return
+        switch (tableData[rowIndex][cellIndex]){
+            case NORMAL: //-1
+            case MINE: //-7
                 dispatch({type: TYPE.FLAG_CELL, row: rowIndex, cell: cellIndex})
-            case FLAG_MINE:
-            case FLAG:
+                return
+            case FLAG_MINE: //-5
+            case FLAG: //-3
                 dispatch({type: TYPE.QUESTION_CELL, row: rowIndex, cell: cellIndex})
-            case QUESTION_MINE:
-            case QUESTION:
+                return
+            case QUESTION_MINE: //-4
+            case QUESTION: //-2
                 dispatch({type: TYPE.NORMALIZE_CELL, row: rowIndex, cell: cellIndex})
+                return
         }
-    },[cellData]);
+    },[tableData[rowIndex][cellIndex]]);
 
 
     return (
         <>
-            <td style={getTdStyle(Number(cellData))} onClick={onClickTd} onContextMenu={onRightClickTd}>{getTdText(Number(cellData))}</td>
+            <td style={getTdStyle(tableData[rowIndex][cellIndex])} onClick={onClickTd} onContextMenu={onRightClickTd}>{/*getTdText(cellData)*/ getTdText(tableData[rowIndex][cellIndex])}</td>
         </>
     )
-})
+}
 export  default MineTd
