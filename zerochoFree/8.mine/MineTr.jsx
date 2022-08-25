@@ -1,6 +1,6 @@
 import React, {memo, useMemo, useRef, useReducer, useEffect} from "react";
 import MindTd from "@/MineTd";
-const MineTr = ({rowIndex, rowData}) => {
+const MineTr = memo(({rowIndex, rowData}) => {
     return (
         <>
             <tr>
@@ -8,5 +8,5 @@ const MineTr = ({rowIndex, rowData}) => {
             </tr>
         </>
     )
-}
+})
 export default MineTr

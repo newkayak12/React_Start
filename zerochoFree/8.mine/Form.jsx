@@ -1,16 +1,15 @@
-import React,{useState, useCallback, useContext} from 'react'
+import React,{memo, useState, useCallback, useContext} from 'react'
 import {TableContext, TYPE} from "./MineSweeper";
-const Form = () =>{
+const Form = memo(() =>{
     const [row, setRow] = useState(10)
     const [cell, setCell] = useState(10)
-    const [mine, setMine] = useState(20)
+    const [mine, setMine] = useState(10)
     const {dispatch} = useContext(TableContext);
 
     const onChangeRow = useCallback((e) =>{setRow(e.target.value)},[])
     const onChangeCell = useCallback((e) =>{setCell(e.target.value)},[])
     const onChangeMine = useCallback((e) =>{
         if((parseInt(row)*parseInt(cell)) < parseInt(mine)){
-            console.log(mine)
             setMine(mine)
             alert("EXCEED")
             return
@@ -28,5 +27,5 @@ const Form = () =>{
             <button onClick={onClickBtn}>시작</button>
         </div>
     )
-}
+})
 export default Form

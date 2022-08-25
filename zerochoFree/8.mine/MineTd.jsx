@@ -61,10 +61,10 @@ const getTdText = (code)=>{
         case QUESTION_MINE:
             return '❓'
         default:
-            return ''
+            return code > 0? code:''
     }
 }
-const MineTd =({rowIndex, cellIndex}) => {
+const MineTd =memo(({rowIndex, cellIndex}) => {
     const {tableData, halted, dispatch} = useContext(TableContext);
 
 
@@ -126,10 +126,22 @@ const MineTd =({rowIndex, cellIndex}) => {
     },[tableData[rowIndex][cellIndex]]);
 
 
+    // return useMemo(()=>(
+    //     <>
+    //         <td style={getTdStyle(tableData[rowIndex][cellIndex])} onClick={onClickTd} onContextMenu={onRightClickTd}>{/*getTdText(cellData)*/ getTdText(tableData[rowIndex][cellIndex])}</td>
+    //     </>
+    // ), [tableData[rowIndex][cellIndex]])
+
+    return (
+        <RealTd onClickTd={onClickTd} onRightClickTd={onRightClickTd} data={tableData[rowIndex][cellIndex]}></RealTd>
+    )
+})
+
+const RealTd = memo(({onClickTd, onRightClickTd, data})=>{
     return (
         <>
-            <td style={getTdStyle(tableData[rowIndex][cellIndex])} onClick={onClickTd} onContextMenu={onRightClickTd}>{/*getTdText(cellData)*/ getTdText(tableData[rowIndex][cellIndex])}</td>
+            <td style={getTdStyle(data)} onClick={onClickTd} onContextMenu={onRightClickTd}>{/*getTdText(cellData)*/ getTdText(data)}</td>
         </>
     )
-}
+})
 export  default MineTd
