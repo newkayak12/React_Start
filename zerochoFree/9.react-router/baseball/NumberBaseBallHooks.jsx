@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import TryHooks from "@/TryHooks";
+import TryHooks from "@/baseball/TryHooks";
 
 const getNumbers = () =>{
     const set = new Set()
